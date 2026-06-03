@@ -24,19 +24,12 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
   position:sticky;top:0;z-index:100;
 }
 .logo{display:flex;align-items:center;gap:10px}
-.logo-icon{
-  width:34px;height:34px;border-radius:8px;
-  background:linear-gradient(135deg,#00d4aa,#3b82f6);
-  display:flex;align-items:center;justify-content:center;font-size:18px;
-}
+.logo-icon{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#00d4aa,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:18px}
 .logo-name{font-size:14px;font-weight:700;letter-spacing:.05em}
 .logo-sub{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
 #clock{font-family:'DM Mono',monospace;font-size:18px;font-weight:600;color:var(--teal)}
 #date-lbl{font-size:11px;color:var(--muted);text-align:right}
-#btn-sync{
-  background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.3);color:var(--teal);
-  border-radius:6px;padding:7px 16px;font-size:12px;font-weight:600;transition:all .15s;
-}
+#btn-sync{background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.3);color:var(--teal);border-radius:6px;padding:7px 16px;font-size:12px;font-weight:600;transition:all .15s}
 #btn-sync:hover{background:rgba(0,212,170,.2)}
 #btn-sync:disabled{opacity:.5;cursor:default}
 #sync-status{font-size:11px;color:var(--muted);min-width:160px;text-align:right}
@@ -48,11 +41,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 .kpi-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:5px}
 .c-teal{color:var(--teal)}.c-red{color:var(--red)}.c-amber{color:var(--amber)}.c-blue{color:var(--blue)}
 
-#next-banner{
-  margin:16px 20px 0;
-  background:var(--panel2);border:1px solid rgba(0,212,170,.3);border-radius:10px;
-  padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;
-}
+#next-banner{margin:16px 20px 0;background:var(--panel2);border:1px solid rgba(0,212,170,.3);border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
 .next-dot{width:10px;height:10px;border-radius:50%;background:var(--teal);flex-shrink:0;animation:pulsar 1.4s ease-in-out infinite}
 @keyframes pulsar{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,212,170,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(0,212,170,0)}}
 .next-label{font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:.15em;margin-bottom:2px}
@@ -64,10 +53,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 .turno-hora{font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:var(--red)}
 #countdown{font-family:'DM Mono',monospace;font-size:13px;margin-top:2px}
 
-#filter-bar{
-  display:flex;align-items:center;gap:8px;
-  padding:12px 20px;border-bottom:1px solid var(--border);background:var(--panel);margin-top:16px;
-}
+#filter-bar{display:flex;align-items:center;gap:8px;padding:12px 20px;border-bottom:1px solid var(--border);background:var(--panel);margin-top:16px}
 .filter-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-right:4px}
 .fbtn{padding:4px 12px;border-radius:4px;font-size:11px;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);transition:all .15s}
 .fbtn:hover{border-color:rgba(255,255,255,.25);color:var(--text)}
@@ -113,10 +99,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 @keyframes girar{to{transform:rotate(360deg)}}
 #empty-msg{text-align:center;padding:48px;color:var(--muted);font-size:13px;display:none}
 
-.error-box{
-  margin:20px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
-  border-radius:8px;padding:16px 20px;color:#fca5a5;font-size:13px;display:none;
-}
+.error-box{margin:16px 20px 0;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:16px 20px;color:#fca5a5;font-size:13px;display:none}
 </style>
 </head>
 <body>
@@ -147,7 +130,6 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 </div>
 
 <div id="next-banner"><span style="color:var(--muted);font-size:13px">Cargando...</span></div>
-
 <div class="error-box" id="error-box"></div>
 
 <div id="filter-bar">
@@ -182,41 +164,22 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 </div>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────────
-const SHEET_ID  = '1qSptp0U_8fuo_bAcsQtsLl5ROVzCN44kZHKuEHC24vI'
-const GID       = '0'   // GID de la pestaña PL3 — si falla probá con 0
+// ── CONFIG ────────────────────────────────────────────────────
+const SHEET_ID = '1qSptp0U_8fuo_bAcsQtsLl5ROVzCN44kZHKuEHC24vI'
+const GID      = '2114457503'
 
-// Lee el Sheet como CSV exportado (no tiene restricción CORS)
-function csvUrl() {
-  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`
+// URL de la API de Google Visualization (no necesita API key, funciona con sheets públicos)
+function sheetUrl() {
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}&headers=1`
 }
 
-// ── PARSER CSV ───────────────────────────────────────────────
-function parseCSV(text) {
-  const lines = text.trim().split('\n')
-  const rows = []
-  for (const line of lines) {
-    // Parser CSV simple que respeta comillas
-    const cols = []
-    let cur = '', inQ = false
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i]
-      if (c === '"') { inQ = !inQ }
-      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = '' }
-      else cur += c
-    }
-    cols.push(cur.trim())
-    rows.push(cols)
-  }
-  return rows
-}
-
-// ── PARSER DE TURNO ──────────────────────────────────────────
+// ── PARSER DE TURNO ───────────────────────────────────────────
 function parseTurno(raw) {
   const r = { horaTexto:null, horaMin:null, prioridad:'BAJA', tipoTurno:'LIBRE', codigo:null }
   if (!raw || !raw.trim()) return r
   const t = raw.trim()
 
+  // Prioridad alta
   if (/prioridad\s+de\s+carga|dar\s+prioridad|urgente/i.test(t)) {
     r.prioridad = 'ALTA'; r.tipoTurno = 'PRIORIDAD'
   }
@@ -226,22 +189,22 @@ function parseTurno(raw) {
   if (m1) {
     const hh=parseInt(m1[1]), mm=parseInt(m1[2])
     if (hh<=23 && mm<=59) {
-      r.horaTexto = `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`
-      r.horaMin = hh*60+mm
+      r.horaTexto=`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`
+      r.horaMin=hh*60+mm
       if (r.tipoTurno!=='PRIORIDAD') r.tipoTurno='HORA'
     }
   }
 
-  // N hs/HS — saltea IDs largos (≥7 dígitos)
+  // N hs / N HS — ignorar IDs largos (≥7 dígitos)
   if (!r.horaTexto) {
-    for (const p of t.split(/[\s\-–\/]+/)) {
-      if (/^\d{7,}$/.test(p)) continue
-      const m2 = p.match(/^(\d{1,2})\s*[hH][sS]?$/)
+    for (const parte of t.split(/[\s\-–\/]+/)) {
+      if (/^\d{7,}$/.test(parte)) continue
+      const m2 = parte.match(/^(\d{1,2})\s*[hH][sS]?$/)
       if (m2) {
         const hh = parseInt(m2[1])
         if (hh <= 23) {
-          r.horaTexto = `${String(hh).padStart(2,'0')}:00`
-          r.horaMin = hh*60
+          r.horaTexto=`${String(hh).padStart(2,'0')}:00`
+          r.horaMin=hh*60
           if (r.tipoTurno!=='PRIORIDAD') r.tipoTurno='HORA'
           break
         }
@@ -264,7 +227,7 @@ function parseTurno(raw) {
 function calcularAlerta(horaMin) {
   if (horaMin===null) return null
   const n=new Date(), ahoraMin=n.getHours()*60+n.getMinutes()
-  const d = horaMin - ahoraMin
+  const d=horaMin-ahoraMin
   if (d<0)   return 'ROJO'
   if (d<=30) return 'ROJO'
   if (d<=60) return 'AMARILLO'
@@ -277,83 +240,114 @@ function scoreOrden(prioridad, horaMin) {
   return 0
 }
 
-// ── RELOJ ────────────────────────────────────────────────────
+// ── RELOJ ─────────────────────────────────────────────────────
 function tickClock() {
-  const now = new Date()
-  document.getElementById('clock').textContent = now.toLocaleTimeString('es-AR',{hour12:false})
-  const s = now.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})
-  document.getElementById('date-lbl').textContent = s.charAt(0).toUpperCase()+s.slice(1)
+  const now=new Date()
+  document.getElementById('clock').textContent=now.toLocaleTimeString('es-AR',{hour12:false})
+  const s=now.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})
+  document.getElementById('date-lbl').textContent=s.charAt(0).toUpperCase()+s.slice(1)
 }
 setInterval(tickClock,1000); tickClock()
 
-// ── ESTADO GLOBAL ────────────────────────────────────────────
-let FILAS = [], filtroActivo = 'todos'
+// ── ESTADO GLOBAL ─────────────────────────────────────────────
+let FILAS=[], filtroActivo='todos'
 
-// ── CARGA DE DATOS ───────────────────────────────────────────
+// ── CARGA ─────────────────────────────────────────────────────
 async function cargarDatos() {
-  const btn = document.getElementById('btn-sync')
-  btn.disabled = true; btn.textContent = '⟳ Actualizando...'
-  document.getElementById('sync-status').textContent = 'Conectando...'
-  document.getElementById('estado-box').style.display = 'block'
-  document.getElementById('estado-box').innerHTML = '<span class="spin">⟳</span> Cargando datos...'
-  document.getElementById('tabla').style.display = 'none'
-  document.getElementById('error-box').style.display = 'none'
+  const btn=document.getElementById('btn-sync')
+  btn.disabled=true; btn.textContent='⟳ Actualizando...'
+  document.getElementById('sync-status').textContent='Conectando...'
+  document.getElementById('estado-box').style.display='block'
+  document.getElementById('estado-box').innerHTML='<span class="spin">⟳</span> Cargando datos...'
+  document.getElementById('tabla').style.display='none'
+  document.getElementById('error-box').style.display='none'
 
   try {
-    // Proxy CORS-free: usamos allorigins para evitar el bloqueo de Google
-    const target = encodeURIComponent(csvUrl())
-    const res = await fetch(`https://api.allorigins.win/get?url=${target}`)
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const json = await res.json()
-    const csv = json.contents
-    if (!csv || csv.length < 10) throw new Error('Respuesta vacía del Sheet')
+    const res = await fetch(sheetUrl())
+    const txt = await res.text()
 
-    const todas = parseCSV(csv)
-    // Fila 0 = headers, desde fila 1 son datos
-    // Columnas: A=Fecha B=Transporte C=Patente D=Dep E=Viaje F=NViaje G=Cliente H=Turno I=Bultos J=Pallets K=Darsena
-    FILAS = []
-    for (let i = 1; i < todas.length; i++) {
-      const c = todas[i]
-      const cliente   = (c[6]||'').trim()
-      const nViaje    = (c[5]||'').trim()
+    // Google devuelve: /*O_o*/google.visualization.Query.setResponse({...});
+    const jsonStr = txt.replace(/^[^{]*/, '').replace(/\);?\s*$/, '')
+    const data = JSON.parse(jsonStr)
+
+    if (!data.table || !data.table.rows) throw new Error('Sin datos en la respuesta')
+
+    // Mapear columnas desde los headers reales del Sheet
+    const cols = data.table.cols.map(c => (c.label||'').toLowerCase().trim())
+    const idx = {
+      transporte: cols.findIndex(c=>c.includes('transporte')),
+      patente:    cols.findIndex(c=>c.includes('patente')),
+      dep:        cols.findIndex(c=>c.includes('dep')),
+      nViaje:     cols.findIndex(c=>c.includes('n°') || c.includes('viaje') || c.includes('nro')),
+      cliente:    cols.findIndex(c=>c.includes('cliente')),
+      turno:      cols.findIndex(c=>c.includes('turno')),
+      bultos:     cols.findIndex(c=>c.includes('bulto')),
+      pallets:    cols.findIndex(c=>c.includes('pallet')),
+      darsena:    cols.findIndex(c=>c.includes('dársena') || c.includes('darsena')),
+    }
+
+    // Fallback por posición si los headers no matchean
+    // A=0 B=1 C=2 D=3 E=4 F=5 G=6 H=7 I=8 J=9 K=10
+    if (idx.transporte<0) idx.transporte=1
+    if (idx.patente<0)    idx.patente=2
+    if (idx.dep<0)        idx.dep=3
+    if (idx.nViaje<0)     idx.nViaje=5
+    if (idx.cliente<0)    idx.cliente=6
+    if (idx.turno<0)      idx.turno=7
+    if (idx.bultos<0)     idx.bultos=8
+    if (idx.pallets<0)    idx.pallets=9
+    if (idx.darsena<0)    idx.darsena=10
+
+    const cel=(row,i)=> i>=0 ? (row.c[i]?.v ?? row.c[i]?.f ?? '') : ''
+
+    FILAS=[]
+    for (const row of data.table.rows) {
+      const cliente  = String(cel(row,idx.cliente)||'').trim()
+      const nViaje   = String(cel(row,idx.nViaje)||'').trim()
       if (!cliente && !nViaje) continue
-      const turnoRaw  = (c[7]||'').trim()
-      const parsed    = parseTurno(turnoRaw)
-      const alerta    = calcularAlerta(parsed.horaMin)
-      const score     = scoreOrden(parsed.prioridad, parsed.horaMin)
+
+      const turnoRaw = String(cel(row,idx.turno)||'').trim()
+      const parsed   = parseTurno(turnoRaw)
+      const alerta   = calcularAlerta(parsed.horaMin)
+      const score    = scoreOrden(parsed.prioridad, parsed.horaMin)
+
       FILAS.push({
-        transporte: (c[1]||'').trim(),
-        patente:    (c[2]||'').trim(),
-        dep:        (c[3]||'').trim(),
-        nViaje,
-        cliente,
-        turnoRaw,
-        bultos:     (c[8]||'').trim(),
-        pallets:    (c[9]||'').trim(),
-        darsena:    (c[10]||'').trim(),
+        transporte: String(cel(row,idx.transporte)||'').trim(),
+        patente:    String(cel(row,idx.patente)||'').trim(),
+        dep:        String(cel(row,idx.dep)||'').trim(),
+        nViaje, cliente, turnoRaw,
+        bultos:     String(cel(row,idx.bultos)||'').trim(),
+        pallets:    String(cel(row,idx.pallets)||'').trim(),
+        darsena:    String(cel(row,idx.darsena)||'').trim(),
         parsed, alerta, score
       })
     }
 
-    FILAS.sort((a,b) => b.score - a.score)
+    FILAS.sort((a,b)=>b.score-a.score)
 
-    const ts = new Date().toLocaleTimeString('es-AR',{hour12:false})
-    document.getElementById('sync-status').textContent = `✓ Actualizado ${ts}`
+    const ts=new Date().toLocaleTimeString('es-AR',{hour12:false})
+    document.getElementById('sync-status').textContent=`✓ ${ts}`
     renderTodo()
 
   } catch(e) {
-    document.getElementById('estado-box').style.display = 'none'
-    const eb = document.getElementById('error-box')
-    eb.style.display = 'block'
-    eb.innerHTML = `⚠ Error al cargar: <b>${e.message}</b><br><small style="opacity:.7">Verificá que el Sheet sea público: Compartir → Cualquier persona con el enlace.</small>`
+    document.getElementById('estado-box').style.display='none'
+    const eb=document.getElementById('error-box')
+    eb.style.display='block'
+    eb.innerHTML=`⚠ Error: <b>${e.message}</b><br>
+      <small style="opacity:.7;line-height:1.8">
+        Pasos para solucionar:<br>
+        1. Abrí el Sheet → Compartir → "Cualquier persona con el enlace" → Lector<br>
+        2. Archivo → Publicar en la web → Publicar<br>
+        3. Hacé click en "↻ Actualizar"
+      </small>`
+    document.getElementById('sync-status').textContent='⚠ Error'
     console.error(e)
-    document.getElementById('sync-status').textContent = '⚠ Error'
   }
 
-  btn.disabled = false; btn.textContent = '↻ Actualizar'
+  btn.disabled=false; btn.textContent='↻ Actualizar'
 }
 
-// ── RENDER ───────────────────────────────────────────────────
+// ── RENDER ────────────────────────────────────────────────────
 function renderTodo() {
   document.getElementById('k-total').textContent  = FILAS.length
   document.getElementById('k-alta').textContent   = FILAS.filter(f=>f.parsed.prioridad==='ALTA').length
@@ -364,29 +358,29 @@ function renderTodo() {
 }
 
 function renderBanner() {
-  const banner = document.getElementById('next-banner')
-  const f = FILAS[0]
+  const banner=document.getElementById('next-banner')
+  const f=FILAS[0]
   if (!f) { banner.innerHTML='<span style="color:var(--muted)">Sin colectas cargadas.</span>'; return }
-  const p = f.parsed
-  const alColor = f.alerta==='ROJO'?'var(--red)':f.alerta==='AMARILLO'?'var(--amber)':'var(--teal)'
-  const prBadge = p.prioridad==='ALTA'
-    ? `<span class="pr-badge pr-alta">🔴 PRIORIDAD ALTA</span>`
-    : p.prioridad==='MEDIA'
-    ? `<span class="pr-badge pr-media">🟡 CON TURNO</span>`
-    : `<span class="pr-badge pr-baja">Sin turno</span>`
+  const p=f.parsed
+  const alColor=f.alerta==='ROJO'?'var(--red)':f.alerta==='AMARILLO'?'var(--amber)':'var(--teal)'
+  const prBadge=p.prioridad==='ALTA'
+    ?`<span class="pr-badge pr-alta">🔴 PRIORIDAD ALTA</span>`
+    :p.prioridad==='MEDIA'
+    ?`<span class="pr-badge pr-media">🟡 CON TURNO</span>`
+    :`<span class="pr-badge pr-baja">Sin turno</span>`
 
-  let turnoBox = ''
+  let turnoBox=''
   if (p.horaTexto) {
-    turnoBox = `<div class="next-turno-box">
+    turnoBox=`<div class="next-turno-box">
       <div class="turno-lbl">Turno en el cliente</div>
       <div class="turno-hora">${p.horaTexto} hs</div>
       <div id="countdown" style="color:${alColor}"></div>
     </div>`
   }
 
-  banner.innerHTML = `
+  banner.innerHTML=`
     <div class="next-dot"></div>
-    <div>
+    <div style="flex:1;min-width:0">
       <div class="next-label">▶ Próximo para cargar</div>
       <div class="next-client">${f.cliente||'—'}</div>
       <div class="next-meta">
@@ -403,55 +397,55 @@ function renderBanner() {
   if (p.horaTexto) startCountdown(p.horaMin)
 }
 
-let cdInterval = null
+let cdInterval=null
 function startCountdown(horaMin) {
   if (cdInterval) clearInterval(cdInterval)
   function tick() {
-    const el = document.getElementById('countdown'); if(!el){clearInterval(cdInterval);return}
-    const now = new Date()
-    const diffSec = (horaMin - now.getHours()*60 - now.getMinutes())*60 - now.getSeconds()
-    if (diffSec < 0) { el.textContent='⚠ TURNO VENCIDO'; return }
-    const h=Math.floor(diffSec/3600), m=Math.floor((diffSec%3600)/60), s=diffSec%60
-    el.textContent = `⏱ ${h>0?h+':':''}${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} para el turno`
+    const el=document.getElementById('countdown'); if(!el){clearInterval(cdInterval);return}
+    const now=new Date()
+    const diffSec=(horaMin-now.getHours()*60-now.getMinutes())*60-now.getSeconds()
+    if (diffSec<0){el.textContent='⚠ TURNO VENCIDO';return}
+    const h=Math.floor(diffSec/3600),m=Math.floor((diffSec%3600)/60),s=diffSec%60
+    el.textContent=`⏱ ${h>0?h+':':''}${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} para el turno`
   }
-  tick(); cdInterval = setInterval(tick, 1000)
+  tick(); cdInterval=setInterval(tick,1000)
 }
 
 function renderTabla() {
-  const estado = document.getElementById('estado-box')
-  const tabla  = document.getElementById('tabla')
-  const empty  = document.getElementById('empty-msg')
-  estado.style.display = 'none'
+  const estado=document.getElementById('estado-box')
+  const tabla=document.getElementById('tabla')
+  const empty=document.getElementById('empty-msg')
+  estado.style.display='none'
 
-  const filtradas = filtroActivo==='todos' ? FILAS : FILAS.filter(f=>f.parsed.prioridad===filtroActivo)
-  document.getElementById('result-count').textContent = `${filtradas.length} colecta${filtradas.length!==1?'s':''}`
+  const filtradas=filtroActivo==='todos'?FILAS:FILAS.filter(f=>f.parsed.prioridad===filtroActivo)
+  document.getElementById('result-count').textContent=`${filtradas.length} colecta${filtradas.length!==1?'s':''}`
 
-  if (!filtradas.length) { tabla.style.display='none'; empty.style.display='block'; return }
-  tabla.style.display='table'; empty.style.display='none'
+  if (!filtradas.length){tabla.style.display='none';empty.style.display='block';return}
+  tabla.style.display='table';empty.style.display='none'
 
-  document.getElementById('tbody').innerHTML = filtradas.map((f,i) => {
-    const p = f.parsed
-    const obCls = i===0?'ob-1':i===1?'ob-2':'ob-n'
-    const prCls = p.prioridad==='ALTA'?'pr-alta':p.prioridad==='MEDIA'?'pr-media':'pr-baja'
-    const prLabel = p.prioridad==='ALTA'?'Alta':p.prioridad==='MEDIA'?'Media':'Baja'
+  document.getElementById('tbody').innerHTML=filtradas.map((f,i)=>{
+    const p=f.parsed
+    const obCls=i===0?'ob-1':i===1?'ob-2':'ob-n'
+    const prCls=p.prioridad==='ALTA'?'pr-alta':p.prioridad==='MEDIA'?'pr-media':'pr-baja'
+    const prLabel=p.prioridad==='ALTA'?'Alta':p.prioridad==='MEDIA'?'Media':'Baja'
 
-    let alertaHTML = '<span style="color:var(--muted)">—</span>'
+    let alertaHTML='<span style="color:var(--muted)">—</span>'
     if (f.alerta) {
-      alertaHTML = `<span class="al-dot al-${f.alerta.toLowerCase()}"></span>
-                    <span class="al-label ${f.alerta.toLowerCase()}">${f.alerta==='ROJO'?'Riesgo':f.alerta==='AMARILLO'?'Atención':'OK'}</span>`
+      alertaHTML=`<span class="al-dot al-${f.alerta.toLowerCase()}"></span>
+                  <span class="al-label ${f.alerta.toLowerCase()}">${f.alerta==='ROJO'?'Riesgo':f.alerta==='AMARILLO'?'Atención':'OK'}</span>`
     }
 
-    let turnoHTML = '<span style="color:var(--muted);font-size:11px">Sin turno</span>'
+    let turnoHTML='<span style="color:var(--muted);font-size:11px">Sin turno</span>'
     if (p.horaTexto) {
-      turnoHTML = `<div class="hora-badge">${p.horaTexto} hs</div>`
-      if (p.codigo) turnoHTML += `<div class="cod-text">${p.codigo}</div>`
+      turnoHTML=`<div class="hora-badge">${p.horaTexto} hs</div>`
+      if (p.codigo) turnoHTML+=`<div class="cod-text">${p.codigo}</div>`
     } else if (p.codigo) {
-      turnoHTML = `<div class="cod-text" style="font-size:12px">${p.codigo}</div>`
+      turnoHTML=`<div class="cod-text" style="font-size:12px">${p.codigo}</div>`
     } else if (f.turnoRaw) {
-      turnoHTML = `<div class="cod-text" style="font-size:11px">${f.turnoRaw.substring(0,35)}</div>`
+      turnoHTML=`<div class="cod-text" style="font-size:11px">${f.turnoRaw.substring(0,35)}</div>`
     }
 
-    const rowCls = p.prioridad==='ALTA'?'row-alta':p.prioridad==='MEDIA'?'row-media':''
+    const rowCls=p.prioridad==='ALTA'?'row-alta':p.prioridad==='MEDIA'?'row-media':''
     return `<tr class="${rowCls}">
       <td><span class="orden-badge ${obCls}">${i+1}</span></td>
       <td><div class="c-name">${f.cliente||'—'}</div>${f.dep?`<div class="c-sub">${f.dep}</div>`:''}</td>
@@ -467,14 +461,13 @@ function renderTabla() {
   }).join('')
 }
 
-function setFiltro(f, btn) {
-  filtroActivo = f
+function setFiltro(f,btn) {
+  filtroActivo=f
   document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'))
   btn.classList.add('active')
   renderTabla()
 }
 
-// Init
 cargarDatos()
 setInterval(cargarDatos, 5*60*1000)
 </script>
