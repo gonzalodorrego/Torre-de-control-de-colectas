@@ -34,12 +34,12 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 #btn-sync:disabled{opacity:.5;cursor:default}
 #sync-status{font-size:11px;color:var(--muted);min-width:160px;text-align:right}
 
-#kpis{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);background:var(--panel)}
+#kpis{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--border);background:var(--panel)}
 .kpi{padding:14px 20px;border-right:1px solid var(--border)}
 .kpi:last-child{border-right:none}
 .kpi-val{font-family:'DM Mono',monospace;font-size:28px;font-weight:700;line-height:1}
 .kpi-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:5px}
-.c-teal{color:var(--teal)}.c-red{color:var(--red)}.c-amber{color:var(--amber)}.c-blue{color:var(--blue)}
+.c-teal{color:var(--teal)}.c-red{color:var(--red)}.c-amber{color:var(--amber)}.c-blue{color:var(--blue)}.c-green{color:var(--green)}
 
 #next-banner{margin:16px 20px 0;background:var(--panel2);border:1px solid rgba(0,212,170,.3);border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
 .next-dot{width:10px;height:10px;border-radius:50%;background:var(--teal);flex-shrink:0;animation:pulsar 1.4s ease-in-out infinite}
@@ -53,7 +53,23 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 .turno-hora{font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:var(--red)}
 #countdown{font-family:'DM Mono',monospace;font-size:13px;margin-top:2px}
 
-#filter-bar{display:flex;align-items:center;gap:8px;padding:12px 20px;border-bottom:1px solid var(--border);background:var(--panel);margin-top:16px}
+/* Tabs */
+#tabs{display:flex;gap:0;margin:16px 20px 0;border-bottom:1px solid var(--border)}
+.tab{
+  padding:8px 20px;font-size:12px;font-weight:600;color:var(--muted);
+  background:transparent;border:none;border-bottom:2px solid transparent;
+  cursor:pointer;transition:all .15s;letter-spacing:.03em;
+}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+.tab-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.1);border-radius:10px;
+  font-size:10px;font-weight:700;padding:1px 6px;margin-left:6px;
+}
+.tab.active .tab-badge{background:rgba(0,212,170,.2);color:var(--teal)}
+
+#filter-bar{display:flex;align-items:center;gap:8px;padding:12px 20px;border-bottom:1px solid var(--border);background:var(--panel)}
 .filter-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-right:4px}
 .fbtn{padding:4px 12px;border-radius:4px;font-size:11px;font-weight:600;background:transparent;border:1px solid var(--border);color:var(--muted);transition:all .15s}
 .fbtn:hover{border-color:rgba(255,255,255,.25);color:var(--text)}
@@ -66,6 +82,10 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 #tabla td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
 #tabla tr:last-child td{border-bottom:none}
 #tabla tr:hover td{background:rgba(255,255,255,.025)}
+
+/* Historial tabla — más tenue */
+#tabla.historial{opacity:.75}
+#tabla.historial th{background:#0a0d16}
 
 .orden-badge{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'DM Mono',monospace}
 .ob-1{background:rgba(0,212,170,.2);border:1px solid rgba(0,212,170,.5);color:var(--teal)}
@@ -82,6 +102,8 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 .pr-alta{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
 .pr-media{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
 .pr-baja{background:rgba(100,116,139,.15);color:var(--muted);border:1px solid rgba(100,116,139,.2)}
+
+.liberado-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.3)}
 
 .al-dot{width:8px;height:8px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:5px}
 .al-rojo{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.6);animation:parpadeo 1s infinite}
@@ -123,14 +145,29 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 </div>
 
 <div id="kpis">
-  <div class="kpi"><div class="kpi-val c-teal" id="k-total">—</div><div class="kpi-lbl">Total colectas</div></div>
+  <div class="kpi"><div class="kpi-val c-teal" id="k-total">—</div><div class="kpi-lbl">Cola activa</div></div>
   <div class="kpi"><div class="kpi-val c-red"  id="k-alta">—</div><div class="kpi-lbl">Prioridad Alta</div></div>
   <div class="kpi"><div class="kpi-val c-amber" id="k-media">—</div><div class="kpi-lbl">Con turno/hora</div></div>
   <div class="kpi"><div class="kpi-val c-blue"  id="k-baja">—</div><div class="kpi-lbl">Sin turno</div></div>
+  <div class="kpi"><div class="kpi-val c-green" id="k-lib">—</div><div class="kpi-lbl">Liberados</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:var(--amber)" id="k-reprog">—</div><div class="kpi-lbl">Reprogramados</div></div>
 </div>
 
 <div id="next-banner"><span style="color:var(--muted);font-size:13px">Cargando...</span></div>
 <div class="error-box" id="error-box"></div>
+
+<!-- TABS -->
+<div id="tabs">
+  <button class="tab active" onclick="setTab('cola',this)">
+    Cola activa <span class="tab-badge" id="badge-cola">—</span>
+  </button>
+  <button class="tab" onclick="setTab('historial',this)">
+    Historial liberados <span class="tab-badge" id="badge-hist">—</span>
+  </button>
+  <button class="tab" onclick="setTab('reprogramados',this)">
+    Reprogramados <span class="tab-badge" id="badge-reprog">—</span>
+  </button>
+</div>
 
 <div id="filter-bar">
   <span class="filter-label">Prioridad:</span>
@@ -156,6 +193,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
         <th>Dársena</th>
         <th>Bultos</th>
         <th>Pallets</th>
+        <th>Detalle</th>
       </tr>
     </thead>
     <tbody id="tbody"></tbody>
@@ -164,11 +202,9 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 </div>
 
 <script>
-// ── CONFIG ────────────────────────────────────────────────────
 const SHEET_ID = '1qSptp0U_8fuo_bAcsQtsLl5ROVzCN44kZHKuEHC24vI'
 const GID      = '2114457503'
 
-// URL de la API de Google Visualization (no necesita API key, funciona con sheets públicos)
 function sheetUrl() {
   return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}&headers=1`
 }
@@ -179,12 +215,10 @@ function parseTurno(raw) {
   if (!raw || !raw.trim()) return r
   const t = raw.trim()
 
-  // Prioridad alta
   if (/prioridad\s+de\s+carga|dar\s+prioridad|urgente/i.test(t)) {
     r.prioridad = 'ALTA'; r.tipoTurno = 'PRIORIDAD'
   }
 
-  // HH:MM
   const m1 = t.match(/\b(\d{1,2}):(\d{2})\b/)
   if (m1) {
     const hh=parseInt(m1[1]), mm=parseInt(m1[2])
@@ -195,14 +229,13 @@ function parseTurno(raw) {
     }
   }
 
-  // N hs / N HS — ignorar IDs largos (≥7 dígitos)
   if (!r.horaTexto) {
     for (const parte of t.split(/[\s\-–\/]+/)) {
       if (/^\d{7,}$/.test(parte)) continue
       const m2 = parte.match(/^(\d{1,2})\s*[hH][sS]?$/)
       if (m2) {
-        const hh = parseInt(m2[1])
-        if (hh <= 23) {
+        const hh=parseInt(m2[1])
+        if (hh<=23) {
           r.horaTexto=`${String(hh).padStart(2,'0')}:00`
           r.horaMin=hh*60
           if (r.tipoTurno!=='PRIORIDAD') r.tipoTurno='HORA'
@@ -212,7 +245,6 @@ function parseTurno(raw) {
     }
   }
 
-  // Código: MOV..., números largos
   const mov = t.match(/\b(MOV[\w\d]+)\b/i)
   if (mov) r.codigo = mov[1].toUpperCase()
   if (!r.codigo) { const n=t.match(/\b(\d{6,})\b/); if(n) r.codigo=n[1] }
@@ -250,7 +282,7 @@ function tickClock() {
 setInterval(tickClock,1000); tickClock()
 
 // ── ESTADO GLOBAL ─────────────────────────────────────────────
-let FILAS=[], filtroActivo='todos'
+let COLA=[], HISTORIAL=[], REPROGRAMADOS=[], filtroActivo='todos', tabActivo='cola'
 
 // ── CARGA ─────────────────────────────────────────────────────
 async function cargarDatos() {
@@ -265,29 +297,25 @@ async function cargarDatos() {
   try {
     const res = await fetch(sheetUrl())
     const txt = await res.text()
-
-    // Google devuelve: /*O_o*/google.visualization.Query.setResponse({...});
     const jsonStr = txt.replace(/^[^{]*/, '').replace(/\);?\s*$/, '')
     const data = JSON.parse(jsonStr)
-
     if (!data.table || !data.table.rows) throw new Error('Sin datos en la respuesta')
 
-    // Mapear columnas desde los headers reales del Sheet
-    const cols = data.table.cols.map(c => (c.label||'').toLowerCase().trim())
+    // Mapear columnas por header
+    const cols = data.table.cols.map(c=>(c.label||'').toLowerCase().trim())
     const idx = {
       transporte: cols.findIndex(c=>c.includes('transporte')),
       patente:    cols.findIndex(c=>c.includes('patente')),
       dep:        cols.findIndex(c=>c.includes('dep')),
-      nViaje:     cols.findIndex(c=>c.includes('n°') || c.includes('viaje') || c.includes('nro')),
+      nViaje:     cols.findIndex(c=>c.includes('n°')||c.includes('viaje')||c.includes('nro')),
       cliente:    cols.findIndex(c=>c.includes('cliente')),
       turno:      cols.findIndex(c=>c.includes('turno')),
       bultos:     cols.findIndex(c=>c.includes('bulto')),
       pallets:    cols.findIndex(c=>c.includes('pallet')),
-      darsena:    cols.findIndex(c=>c.includes('dársena') || c.includes('darsena')),
+      darsena:    cols.findIndex(c=>c.includes('d'+'ársena')||c.includes('darsena')),
+      detalle:    cols.findIndex(c=>c.includes('detalle')),
     }
-
-    // Fallback por posición si los headers no matchean
-    // A=0 B=1 C=2 D=3 E=4 F=5 G=6 H=7 I=8 J=9 K=10
+    // Fallback posicional: A=0 B=1 C=2 D=3 E=4 F=5 G=6 H=7 I=8 J=9 K=10 N=13
     if (idx.transporte<0) idx.transporte=1
     if (idx.patente<0)    idx.patente=2
     if (idx.dep<0)        idx.dep=3
@@ -297,33 +325,53 @@ async function cargarDatos() {
     if (idx.bultos<0)     idx.bultos=8
     if (idx.pallets<0)    idx.pallets=9
     if (idx.darsena<0)    idx.darsena=10
+    if (idx.detalle<0)    idx.detalle=13  // columna N
 
-    const cel=(row,i)=> i>=0 ? (row.c[i]?.v ?? row.c[i]?.f ?? '') : ''
+    const cel=(row,i)=>i>=0?(row.c[i]?.v??row.c[i]?.f??''):''
 
-    FILAS=[]
+    COLA=[]; HISTORIAL=[]; REPROGRAMADOS=[]
+
     for (const row of data.table.rows) {
       const cliente  = String(cel(row,idx.cliente)||'').trim()
       const nViaje   = String(cel(row,idx.nViaje)||'').trim()
       if (!cliente && !nViaje) continue
 
       const turnoRaw = String(cel(row,idx.turno)||'').trim()
+      const detalle  = String(cel(row,idx.detalle)||'').trim()
       const parsed   = parseTurno(turnoRaw)
       const alerta   = calcularAlerta(parsed.horaMin)
       const score    = scoreOrden(parsed.prioridad, parsed.horaMin)
 
-      FILAS.push({
+      const fila = {
         transporte: String(cel(row,idx.transporte)||'').trim(),
         patente:    String(cel(row,idx.patente)||'').trim(),
         dep:        String(cel(row,idx.dep)||'').trim(),
-        nViaje, cliente, turnoRaw,
+        nViaje, cliente, turnoRaw, detalle,
         bultos:     String(cel(row,idx.bultos)||'').trim(),
         pallets:    String(cel(row,idx.pallets)||'').trim(),
         darsena:    String(cel(row,idx.darsena)||'').trim(),
         parsed, alerta, score
-      })
+      }
+
+      // "Liberado" (case-insensitive) → historial; todo lo demás → cola activa
+      // Liberado → historial | Reprogramado → reprogramados | todo lo demás → cola activa
+      if (/^liberado$/i.test(detalle)) {
+        HISTORIAL.push(fila)
+      } else if (/^reprogramado$/i.test(detalle)) {
+        REPROGRAMADOS.push(fila)
+      } else {
+        COLA.push(fila)
+      }
     }
 
-    FILAS.sort((a,b)=>b.score-a.score)
+    COLA.sort((a,b)=>b.score-a.score)
+    // Historial: orden inverso (los más recientes primero — últimas filas del sheet)
+    HISTORIAL.reverse()
+
+    // Actualizar badges de tabs
+    document.getElementById('badge-cola').textContent=COLA.length
+    document.getElementById('badge-hist').textContent=HISTORIAL.length
+    document.getElementById('badge-reprog').textContent=REPROGRAMADOS.length
 
     const ts=new Date().toLocaleTimeString('es-AR',{hour12:false})
     document.getElementById('sync-status').textContent=`✓ ${ts}`
@@ -335,7 +383,6 @@ async function cargarDatos() {
     eb.style.display='block'
     eb.innerHTML=`⚠ Error: <b>${e.message}</b><br>
       <small style="opacity:.7;line-height:1.8">
-        Pasos para solucionar:<br>
         1. Abrí el Sheet → Compartir → "Cualquier persona con el enlace" → Lector<br>
         2. Archivo → Publicar en la web → Publicar<br>
         3. Hacé click en "↻ Actualizar"
@@ -349,18 +396,21 @@ async function cargarDatos() {
 
 // ── RENDER ────────────────────────────────────────────────────
 function renderTodo() {
-  document.getElementById('k-total').textContent  = FILAS.length
-  document.getElementById('k-alta').textContent   = FILAS.filter(f=>f.parsed.prioridad==='ALTA').length
-  document.getElementById('k-media').textContent  = FILAS.filter(f=>f.parsed.prioridad==='MEDIA').length
-  document.getElementById('k-baja').textContent   = FILAS.filter(f=>f.parsed.prioridad==='BAJA').length
+  document.getElementById('k-total').textContent  = COLA.length
+  document.getElementById('k-alta').textContent   = COLA.filter(f=>f.parsed.prioridad==='ALTA').length
+  document.getElementById('k-media').textContent  = COLA.filter(f=>f.parsed.prioridad==='MEDIA').length
+  document.getElementById('k-baja').textContent   = COLA.filter(f=>f.parsed.prioridad==='BAJA').length
+  document.getElementById('k-lib').textContent    = HISTORIAL.length
+  document.getElementById('k-reprog').textContent = REPROGRAMADOS.length
   renderBanner()
   renderTabla()
 }
 
 function renderBanner() {
   const banner=document.getElementById('next-banner')
-  const f=FILAS[0]
-  if (!f) { banner.innerHTML='<span style="color:var(--muted)">Sin colectas cargadas.</span>'; return }
+  // Banner solo muestra el próximo de la COLA activa
+  const f=COLA[0]
+  if (!f) { banner.innerHTML='<span style="color:var(--green);font-size:13px">✓ Sin colectas pendientes en la cola.</span>'; return }
   const p=f.parsed
   const alColor=f.alerta==='ROJO'?'var(--red)':f.alerta==='AMARILLO'?'var(--amber)':'var(--teal)'
   const prBadge=p.prioridad==='ALTA'
@@ -415,25 +465,43 @@ function renderTabla() {
   const estado=document.getElementById('estado-box')
   const tabla=document.getElementById('tabla')
   const empty=document.getElementById('empty-msg')
+  const filterBar=document.getElementById('filter-bar')
   estado.style.display='none'
 
-  const filtradas=filtroActivo==='todos'?FILAS:FILAS.filter(f=>f.parsed.prioridad===filtroActivo)
-  document.getElementById('result-count').textContent=`${filtradas.length} colecta${filtradas.length!==1?'s':''}`
+  const esCola       = tabActivo==='cola'
+  const esHistorial  = tabActivo==='historial'
+  const esReprog     = tabActivo==='reprogramados'
 
-  if (!filtradas.length){tabla.style.display='none';empty.style.display='block';return}
-  tabla.style.display='table';empty.style.display='none'
+  // Filtros de prioridad solo en cola activa
+  filterBar.style.display = esCola ? 'flex' : 'none'
+  tabla.className = esCola ? '' : 'historial'
 
-  document.getElementById('tbody').innerHTML=filtradas.map((f,i)=>{
+  let fuente = esHistorial ? HISTORIAL : esReprog ? REPROGRAMADOS : COLA
+  if (esCola && filtroActivo!=='todos')
+    fuente = fuente.filter(f=>f.parsed.prioridad===filtroActivo)
+
+  document.getElementById('result-count').textContent=`${fuente.length} colecta${fuente.length!==1?'s':''}`
+
+  if (!fuente.length){tabla.style.display='none';empty.style.display='block';return}
+  tabla.style.display='table'; empty.style.display='none'
+
+  // Ajustar header según tab
+  const thead = tabla.querySelector('thead tr')
+  if (esCola) {
+    thead.cells[5].textContent='Prioridad'
+    thead.cells[6].textContent='Alerta'
+  } else {
+    thead.cells[5].textContent='Estado'
+    thead.cells[6].textContent='Turno'
+  }
+  } else {
+    thead.cells[5].textContent='Prioridad'
+    thead.cells[6].textContent='Alerta'
+  }
+
+  document.getElementById('tbody').innerHTML=fuente.map((f,i)=>{
     const p=f.parsed
     const obCls=i===0?'ob-1':i===1?'ob-2':'ob-n'
-    const prCls=p.prioridad==='ALTA'?'pr-alta':p.prioridad==='MEDIA'?'pr-media':'pr-baja'
-    const prLabel=p.prioridad==='ALTA'?'Alta':p.prioridad==='MEDIA'?'Media':'Baja'
-
-    let alertaHTML='<span style="color:var(--muted)">—</span>'
-    if (f.alerta) {
-      alertaHTML=`<span class="al-dot al-${f.alerta.toLowerCase()}"></span>
-                  <span class="al-label ${f.alerta.toLowerCase()}">${f.alerta==='ROJO'?'Riesgo':f.alerta==='AMARILLO'?'Atención':'OK'}</span>`
-    }
 
     let turnoHTML='<span style="color:var(--muted);font-size:11px">Sin turno</span>'
     if (p.horaTexto) {
@@ -443,6 +511,36 @@ function renderTabla() {
       turnoHTML=`<div class="cod-text" style="font-size:12px">${p.codigo}</div>`
     } else if (f.turnoRaw) {
       turnoHTML=`<div class="cod-text" style="font-size:11px">${f.turnoRaw.substring(0,35)}</div>`
+    }
+
+    if (!esCola) {
+      // Vista historial / reprogramados
+      const badge = esReprog
+        ? `<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)">🔄 Reprogramado</span>`
+        : `<span class="liberado-badge">✓ Liberado</span>`
+      return `<tr>
+        <td><span class="orden-badge ob-n">${i+1}</span></td>
+        <td><div class="c-name">${f.cliente||'—'}</div>${f.dep?`<div class="c-sub">${f.dep}</div>`:''}</td>
+        <td><div>${f.transporte||'—'}</div>${f.patente?`<div style="margin-top:3px"><span class="plate">${f.patente}</span></div>`:''}</td>
+        <td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.nViaje||'—'}</span></td>
+        <td>${turnoHTML}</td>
+        <td>${badge}</td>
+        <td><span style="font-size:11px;color:var(--muted)">${f.turnoRaw||'—'}</span></td>
+        <td><span style="font-size:12px;color:var(--muted)">${f.darsena||'—'}</span></td>
+        <td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.bultos||'—'}</span></td>
+        <td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.pallets||'—'}</span></td>
+        <td><span style="font-size:11px;color:var(--muted)">${f.detalle||'—'}</span></td>
+      </tr>`
+    }
+
+    // Vista cola activa
+    const prCls=p.prioridad==='ALTA'?'pr-alta':p.prioridad==='MEDIA'?'pr-media':'pr-baja'
+    const prLabel=p.prioridad==='ALTA'?'Alta':p.prioridad==='MEDIA'?'Media':'Baja'
+
+    let alertaHTML='<span style="color:var(--muted)">—</span>'
+    if (f.alerta) {
+      alertaHTML=`<span class="al-dot al-${f.alerta.toLowerCase()}"></span>
+                  <span class="al-label ${f.alerta.toLowerCase()}">${f.alerta==='ROJO'?'Riesgo':f.alerta==='AMARILLO'?'Atención':'OK'}</span>`
     }
 
     const rowCls=p.prioridad==='ALTA'?'row-alta':p.prioridad==='MEDIA'?'row-media':''
@@ -457,6 +555,7 @@ function renderTabla() {
       <td><span style="font-size:12px;color:var(--muted)">${f.darsena||'—'}</span></td>
       <td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.bultos||'—'}</span></td>
       <td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.pallets||'—'}</span></td>
+      <td><span style="font-size:11px;color:var(--muted)">${f.detalle||'—'}</span></td>
     </tr>`
   }).join('')
 }
@@ -464,6 +563,13 @@ function renderTabla() {
 function setFiltro(f,btn) {
   filtroActivo=f
   document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'))
+  btn.classList.add('active')
+  renderTabla()
+}
+
+function setTab(t,btn) {
+  tabActivo=t
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'))
   btn.classList.add('active')
   renderTabla()
 }
