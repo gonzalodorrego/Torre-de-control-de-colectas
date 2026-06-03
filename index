@@ -1,1 +1,574 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Torre de Control — Colectas PL3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b0f1c;--panel:#111827;--panel2:#19253b;
+  --border:rgba(255,255,255,0.07);--text:#e2e8f0;--muted:#64748b;
+  --teal:#00d4aa;--blue:#3b82f6;--red:#ef4444;--amber:#f59e0b;--green:#10b981;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;font-size:14px;min-height:100vh}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:2px}
+
+/* ── TOPBAR ── */
+#topbar{
+  background:var(--panel);border-bottom:1px solid var(--border);
+  padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{
+  width:34px;height:34px;border-radius:8px;
+  background:linear-gradient(135deg,#00d4aa,#3b82f6);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.logo-name{font-size:14px;font-weight:700;letter-spacing:.05em}
+.logo-sub{font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+#clock{font-family:'DM Mono',monospace;font-size:18px;font-weight:600;color:var(--teal);letter-spacing:.05em}
+#date-lbl{font-size:11px;color:var(--muted);text-align:right}
+#btn-sync{
+  background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.3);color:var(--teal);
+  border-radius:6px;padding:7px 16px;font-size:12px;font-weight:600;
+  display:flex;align-items:center;gap:6px;transition:all .15s;
+}
+#btn-sync:hover{background:rgba(0,212,170,.2)}
+#btn-sync:disabled{opacity:.5;cursor:default}
+#sync-status{font-size:11px;color:var(--muted);min-width:140px;text-align:right}
+
+/* ── KPIs ── */
+#kpis{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-bottom:1px solid var(--border);background:var(--panel);
+}
+.kpi{padding:14px 20px;border-right:1px solid var(--border)}
+.kpi:last-child{border-right:none}
+.kpi-val{font-family:'DM Mono',monospace;font-size:28px;font-weight:700;line-height:1}
+.kpi-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:5px}
+.c-teal{color:var(--teal)}.c-red{color:var(--red)}.c-amber{color:var(--amber)}.c-blue{color:var(--blue)}
+
+/* ── NEXT TRUCK BANNER ── */
+#next-banner{
+  margin:16px 20px 0;
+  background:var(--panel2);border:1px solid rgba(0,212,170,.3);border-radius:10px;
+  padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.next-dot{
+  width:10px;height:10px;border-radius:50%;background:var(--teal);flex-shrink:0;
+  animation:pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,212,170,.4)}50%{opacity:.7;box-shadow:0 0 0 6px rgba(0,212,170,0)}}
+.next-label{font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:.15em;margin-bottom:2px}
+.next-client{font-size:18px;font-weight:700}
+.next-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.chip{
+  font-size:11px;color:var(--muted);background:rgba(255,255,255,.05);
+  border:1px solid var(--border);border-radius:4px;padding:2px 8px;
+}
+.next-turno-box{
+  margin-left:auto;text-align:right;
+}
+.turno-text{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.turno-time{font-family:'DM Mono',monospace;font-size:22px;font-weight:700;color:var(--red)}
+#countdown{font-family:'DM Mono',monospace;font-size:13px;margin-top:2px}
+.empty-banner{color:var(--muted);font-size:13px}
+
+/* ── FILTERS ── */
+#filter-bar{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 20px;border-bottom:1px solid var(--border);background:var(--panel);
+  margin-top:16px;
+}
+.filter-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-right:4px}
+.fbtn{
+  padding:4px 12px;border-radius:4px;font-size:11px;font-weight:600;
+  background:transparent;border:1px solid var(--border);color:var(--muted);transition:all .15s;
+}
+.fbtn:hover{border-color:rgba(255,255,255,.25);color:var(--text)}
+.fbtn.active{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.4);color:#93c5fd}
+#result-count{margin-left:auto;font-size:11px;color:var(--muted)}
+
+/* ── TABLE ── */
+#table-wrap{overflow-x:auto;padding:0 20px 20px}
+#tabla{
+  width:100%;border-collapse:collapse;margin-top:12px;
+  background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;
+}
+#tabla th{
+  font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:600;
+  padding:10px 12px;text-align:left;background:#0b0f1c;border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+#tabla td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+#tabla tr:last-child td{border-bottom:none}
+#tabla tr:hover td{background:rgba(255,255,255,.025)}
+
+.orden-badge{
+  width:26px;height:26px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;font-family:'DM Mono',monospace;
+}
+.ob-1{background:rgba(0,212,170,.2);border:1px solid rgba(0,212,170,.5);color:var(--teal)}
+.ob-2{background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.4);color:var(--blue)}
+.ob-n{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted)}
+
+.c-name{font-weight:600;color:var(--text)}
+.c-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.plate{
+  font-family:'DM Mono',monospace;font-size:11px;font-weight:500;
+  background:rgba(255,255,255,.06);border:1px solid var(--border);
+  border-radius:4px;padding:2px 7px;color:var(--text);letter-spacing:.05em;
+  display:inline-block;
+}
+.hora-badge{font-family:'DM Mono',monospace;font-size:13px;font-weight:700}
+.cod-text{font-size:11px;color:var(--muted);margin-top:1px}
+
+.pr-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+.pr-alta{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3)}
+.pr-media{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
+.pr-baja{background:rgba(100,116,139,.15);color:var(--muted);border:1px solid rgba(100,116,139,.2)}
+
+.al-dot{
+  width:8px;height:8px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:5px;
+}
+.al-rojo{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.6);animation:pulse-dot 1s infinite}
+.al-amarillo{background:var(--amber)}
+.al-verde{background:var(--green)}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.35}}
+
+.al-label{font-size:11px}
+.al-label.rojo{color:#fca5a5}
+.al-label.amarillo{color:#fcd34d}
+.al-label.verde{color:#6ee7b7}
+
+.row-alta td:first-child{border-left:3px solid rgba(239,68,68,.5)}
+.row-media td:first-child{border-left:3px solid rgba(245,158,11,.3)}
+
+#empty-msg{
+  text-align:center;padding:48px;color:var(--muted);font-size:13px;display:none;
+}
+#loading-msg{
+  text-align:center;padding:60px;color:var(--muted);font-size:13px;
+}
+.spin{display:inline-block;animation:spin 1s linear infinite;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  <div class="logo">
+    <div class="logo-icon">🚛</div>
+    <div>
+      <div class="logo-name">TORRE DE CONTROL</div>
+      <div class="logo-sub">Colectas · PL3 Tortuguitas</div>
+    </div>
+  </div>
+  <div style="text-align:right">
+    <div id="clock">--:--:--</div>
+    <div id="date-lbl">cargando...</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div id="sync-status">—</div>
+    <button id="btn-sync" onclick="cargarDatos()">↻ Actualizar</button>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div id="kpis">
+  <div class="kpi"><div class="kpi-val c-teal" id="k-total">—</div><div class="kpi-lbl">Total colectas</div></div>
+  <div class="kpi"><div class="kpi-val c-red"  id="k-alta">—</div><div class="kpi-lbl">Prioridad Alta</div></div>
+  <div class="kpi"><div class="kpi-val c-amber" id="k-media">—</div><div class="kpi-lbl">Con turno/hora</div></div>
+  <div class="kpi"><div class="kpi-val c-blue"  id="k-baja">—</div><div class="kpi-lbl">Sin turno</div></div>
+</div>
+
+<!-- PRÓXIMO BANNER -->
+<div id="next-banner">
+  <div class="empty-banner" id="next-empty">Cargando datos...</div>
+</div>
+
+<!-- FILTROS -->
+<div id="filter-bar">
+  <span class="filter-label">Prioridad:</span>
+  <button class="fbtn active" onclick="setFiltro('todos',this)">Todos</button>
+  <button class="fbtn" onclick="setFiltro('ALTA',this)">🔴 Alta</button>
+  <button class="fbtn" onclick="setFiltro('MEDIA',this)">🟡 Con turno</button>
+  <button class="fbtn" onclick="setFiltro('BAJA',this)">⚪ Sin turno</button>
+  <span id="result-count"></span>
+</div>
+
+<!-- TABLA -->
+<div id="table-wrap">
+  <div id="loading-msg"><span class="spin">⟳</span> Conectando con Google Sheets...</div>
+  <table id="tabla" style="display:none">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Cliente</th>
+        <th>Transporte / Patente</th>
+        <th>N° Viaje</th>
+        <th>Turno detectado</th>
+        <th>Prioridad</th>
+        <th>Alerta</th>
+        <th>Dársena</th>
+        <th>Bultos</th>
+        <th>Pallets</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div id="empty-msg">No hay colectas para el filtro seleccionado.</div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────
+//  CONFIG — ajustá tu Sheet ID si cambia
+// ─────────────────────────────────────────────────────────
+const SHEET_ID   = '1qSptp0U_8fuo_bAcsQtsLl5ROVzCN44kZHKuEHC24vI'
+const SHEET_NAME = 'PL3'   // nombre de la pestaña
+const RANGO      = 'A2:R200'
+
+// URL pública (funciona porque el Sheet es público)
+function sheetUrl() {
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&range=${RANGO}`
+}
+
+// ─────────────────────────────────────────────────────────
+//  PARSER DE TURNO — calibrado con los datos reales
+// ─────────────────────────────────────────────────────────
+function parseTurno(raw) {
+  const r = { horaTexto:null, horaMin:null, prioridad:'BAJA', tipoTurno:'LIBRE', codigo:null }
+  if (!raw || !raw.trim()) return r
+  const t = raw.trim()
+
+  // Prioridad alta por keywords
+  if (/prioridad\s+de\s+carga|dar\s+prioridad|urgente/i.test(t)) {
+    r.prioridad = 'ALTA'; r.tipoTurno = 'PRIORIDAD'
+  }
+
+  // Hora HH:MM
+  const m1 = t.match(/\b(\d{1,2}):(\d{2})\b/)
+  if (m1) {
+    const hh=parseInt(m1[1]),mm=parseInt(m1[2])
+    if (hh<=23 && mm<=59) {
+      r.horaTexto=`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`
+      r.horaMin=hh*60+mm
+      if (r.tipoTurno!=='PRIORIDAD') r.tipoTurno='HORA'
+    }
+  }
+
+  // Hora "N hs/HS/Hs" — pero solo si no es un número largo (ID de cita ≥7 dígitos)
+  if (!r.horaTexto) {
+    const partes = t.split(/[\s\-–\/]+/)
+    for (const p of partes) {
+      if (/^\d{7,}$/.test(p)) continue  // skip IDs largos
+      const m2 = p.match(/^(\d{1,2})\s*[hH][sS]?$/)
+      if (m2) {
+        const hh=parseInt(m2[1])
+        if (hh<=23) {
+          r.horaTexto=`${String(hh).padStart(2,'0')}:00`
+          r.horaMin=hh*60
+          if (r.tipoTurno!=='PRIORIDAD') r.tipoTurno='HORA'
+          break
+        }
+      }
+    }
+  }
+
+  // Código/referencia: MOV..., números largos
+  const mov = t.match(/\b(MOV[\w\d]+)\b/i)
+  if (mov) r.codigo = mov[1].toUpperCase()
+  if (!r.codigo) { const n=t.match(/\b(\d{6,})\b/); if(n) r.codigo=n[1] }
+  if (r.codigo && r.tipoTurno==='LIBRE') r.tipoTurno='COD'
+
+  // Prioridad final
+  if (r.prioridad!=='ALTA')
+    r.prioridad = (r.horaTexto||r.codigo) ? 'MEDIA' : 'BAJA'
+
+  return r
+}
+
+function calcularAlerta(horaMin) {
+  if (horaMin===null) return null
+  const n=new Date(), ahoraMin=n.getHours()*60+n.getMinutes()
+  const d=horaMin-ahoraMin
+  if (d<0) return 'ROJO'
+  if (d<=30) return 'ROJO'
+  if (d<=60) return 'AMARILLO'
+  return 'VERDE'
+}
+
+function scoreOrden(p, horaMin) {
+  if (p.prioridad==='ALTA')  return horaMin!==null ? 100000-horaMin : 109999
+  if (p.prioridad==='MEDIA') return horaMin!==null ? 50000-horaMin  : 40001
+  return 0
+}
+
+// ─────────────────────────────────────────────────────────
+//  RELOJ
+// ─────────────────────────────────────────────────────────
+function tickClock() {
+  const now=new Date()
+  document.getElementById('clock').textContent=now.toLocaleTimeString('es-AR',{hour12:false})
+  const opts={weekday:'long',day:'numeric',month:'long'}
+  const s=now.toLocaleDateString('es-AR',opts)
+  document.getElementById('date-lbl').textContent=s.charAt(0).toUpperCase()+s.slice(1)
+}
+setInterval(tickClock,1000); tickClock()
+
+// ─────────────────────────────────────────────────────────
+//  ESTADO GLOBAL
+// ─────────────────────────────────────────────────────────
+let FILAS = []
+let filtroActivo = 'todos'
+
+// ─────────────────────────────────────────────────────────
+//  CARGAR DATOS DESDE GOOGLE SHEETS
+// ─────────────────────────────────────────────────────────
+async function cargarDatos() {
+  const btn=document.getElementById('btn-sync')
+  btn.disabled=true; btn.textContent='⟳ Actualizando...'
+  document.getElementById('sync-status').textContent='Conectando...'
+  document.getElementById('loading-msg').style.display='block'
+  document.getElementById('tabla').style.display='none'
+  document.getElementById('empty-msg').style.display='none'
+
+  try {
+    const res = await fetch(sheetUrl())
+    const txt = await res.text()
+    // Google devuelve JSONP: /*O_o*/google.visualization.Query.setResponse({...});
+    const json = JSON.parse(txt.replace(/^.*?\(/, '').replace(/\);?\s*$/, ''))
+    const rows = json.table.rows
+
+    FILAS = []
+    for (const row of rows) {
+      const cel = (i) => row.c[i]?.v ?? row.c[i]?.f ?? ''
+      const fecha     = cel(0)
+      const transporte= String(cel(1)||'').trim()
+      const patente   = String(cel(2)||'').trim()
+      const dep       = String(cel(3)||'').trim()
+      const viaje     = String(cel(4)||'').trim()
+      const nViaje    = String(cel(5)||'').trim()
+      const cliente   = String(cel(6)||'').trim()
+      const turnoRaw  = String(cel(7)||'').trim()
+      const bultos    = cel(8)||''
+      const pallets   = cel(9)||''
+      const darsena   = String(cel(10)||'').trim()
+
+      if (!cliente && !nViaje) continue  // fila vacía
+
+      const parsed = parseTurno(turnoRaw)
+      const alerta = calcularAlerta(parsed.horaMin)
+      const score  = scoreOrden(parsed, parsed.horaMin)
+
+      FILAS.push({ fecha,transporte,patente,dep,viaje,nViaje,cliente,turnoRaw,
+                   bultos,pallets,darsena,parsed,alerta,score })
+    }
+
+    // Ordenar: mayor score primero
+    FILAS.sort((a,b)=>b.score-a.score)
+
+    const ts=new Date().toLocaleTimeString('es-AR',{hour12:false})
+    document.getElementById('sync-status').textContent=`Actualizado ${ts}`
+    renderTodo()
+
+  } catch(e) {
+    document.getElementById('sync-status').textContent='Error al conectar'
+    document.getElementById('loading-msg').textContent='⚠ Error al cargar datos. Verificá que el Sheet sea público.'
+    console.error(e)
+  }
+
+  btn.disabled=false; btn.textContent='↻ Actualizar'
+}
+
+// ─────────────────────────────────────────────────────────
+//  RENDER
+// ─────────────────────────────────────────────────────────
+function renderTodo() {
+  renderKPIs()
+  renderBanner()
+  renderTabla()
+}
+
+function renderKPIs() {
+  const total=FILAS.length
+  const alta=FILAS.filter(f=>f.parsed.prioridad==='ALTA').length
+  const media=FILAS.filter(f=>f.parsed.prioridad==='MEDIA').length
+  const baja=FILAS.filter(f=>f.parsed.prioridad==='BAJA').length
+  document.getElementById('k-total').textContent=total
+  document.getElementById('k-alta').textContent=alta
+  document.getElementById('k-media').textContent=media
+  document.getElementById('k-baja').textContent=baja
+}
+
+function renderBanner() {
+  const banner=document.getElementById('next-banner')
+  const primero=FILAS[0]
+  if (!primero) {
+    banner.innerHTML='<div class="empty-banner">Sin colectas cargadas.</div>'
+    return
+  }
+  const p=primero.parsed
+  const al=primero.alerta
+  const alColor=al==='ROJO'?'var(--red)':al==='AMARILLO'?'var(--amber)':'var(--teal)'
+
+  let turnoHTML=''
+  if (p.horaTexto) {
+    turnoHTML=`
+      <div class="next-turno-box">
+        <div class="turno-text">Turno en el cliente</div>
+        <div class="turno-time">${p.horaTexto} hs</div>
+        <div id="countdown" style="color:${alColor}"></div>
+      </div>`
+  } else if (p.codigo) {
+    turnoHTML=`<div class="next-turno-box"><div class="turno-text">Código</div><div style="font-family:'DM Mono',monospace;font-size:14px;font-weight:600;margin-top:4px">${p.codigo}</div></div>`
+  }
+
+  const prBadge = p.prioridad==='ALTA'
+    ? `<span class="pr-badge pr-alta">🔴 PRIORIDAD ALTA</span>`
+    : p.prioridad==='MEDIA'
+    ? `<span class="pr-badge pr-media">🟡 CON TURNO</span>`
+    : `<span class="pr-badge pr-baja">Sin turno</span>`
+
+  banner.innerHTML=`
+    <div class="next-dot"></div>
+    <div>
+      <div class="next-label">▶ Próximo para cargar</div>
+      <div class="next-client">${primero.cliente||'—'}</div>
+      <div class="next-meta">
+        ${primero.transporte?`<span class="chip">${primero.transporte}</span>`:''}
+        ${primero.patente?`<span class="chip">${primero.patente}</span>`:''}
+        ${primero.nViaje?`<span class="chip">Viaje #${primero.nViaje}</span>`:''}
+        ${primero.darsena?`<span class="chip">Dársena ${primero.darsena}</span>`:''}
+        ${prBadge}
+      </div>
+      ${primero.turnoRaw?`<div style="font-size:11px;color:var(--muted);margin-top:6px">📋 ${primero.turnoRaw}</div>`:''}
+    </div>
+    ${turnoHTML}
+  `
+  if (p.horaTexto) startCountdown(p.horaMin)
+}
+
+let cdInterval=null
+function startCountdown(horaMin) {
+  if (cdInterval) clearInterval(cdInterval)
+  function tick() {
+    const el=document.getElementById('countdown')
+    if (!el) { clearInterval(cdInterval); return }
+    const now=new Date(), nowMin=now.getHours()*60+now.getMinutes()
+    const nowSec=now.getSeconds()
+    const diffSec=(horaMin-nowMin)*60-nowSec
+    if (diffSec<0) { el.textContent='⚠ TURNO VENCIDO'; el.style.color='var(--red)'; return }
+    const h=Math.floor(diffSec/3600)
+    const m=Math.floor((diffSec%3600)/60)
+    const s=diffSec%60
+    const label=h>0
+      ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
+      : `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
+    el.textContent=`⏱ ${label} para el turno`
+  }
+  tick(); cdInterval=setInterval(tick,1000)
+}
+
+function renderTabla() {
+  const loading=document.getElementById('loading-msg')
+  const tabla=document.getElementById('tabla')
+  const empty=document.getElementById('empty-msg')
+  const tbody=document.getElementById('tbody')
+
+  loading.style.display='none'
+
+  const filtradas = filtroActivo==='todos'
+    ? FILAS
+    : FILAS.filter(f=>f.parsed.prioridad===filtroActivo)
+
+  document.getElementById('result-count').textContent=`${filtradas.length} colecta${filtradas.length!==1?'s':''}`
+
+  if (!filtradas.length) {
+    tabla.style.display='none'; empty.style.display='block'; return
+  }
+  tabla.style.display='table'; empty.style.display='none'
+
+  tbody.innerHTML = filtradas.map((f,i) => {
+    const p=f.parsed
+    const al=f.alerta
+
+    // badge orden
+    const obCls=i===0?'ob-1':i===1?'ob-2':'ob-n'
+
+    // prioridad
+    const prCls=p.prioridad==='ALTA'?'pr-alta':p.prioridad==='MEDIA'?'pr-media':'pr-baja'
+    const prLabel=p.prioridad==='ALTA'?'Alta':p.prioridad==='MEDIA'?'Media':'Baja'
+
+    // alerta
+    let alertaHTML='<span style="color:var(--muted)">—</span>'
+    if (al) {
+      const dotCls=`al-${al.toLowerCase()}`
+      const lblCls=al.toLowerCase()
+      const lblTxt=al==='ROJO'?'Riesgo':al==='AMARILLO'?'Atención':'OK'
+      alertaHTML=`<span class="al-dot ${dotCls}"></span><span class="al-label ${lblCls}">${lblTxt}</span>`
+    }
+
+    // turno detectado
+    let turnoHTML='<span style="color:var(--muted);font-size:11px">Sin turno</span>'
+    if (p.horaTexto) {
+      turnoHTML=`<div class="hora-badge">${p.horaTexto} hs</div>`
+      if (p.codigo) turnoHTML+=`<div class="cod-text">${p.codigo}</div>`
+    } else if (p.codigo) {
+      turnoHTML=`<div class="cod-text" style="font-size:12px">${p.codigo}</div>`
+    } else if (f.turnoRaw) {
+      turnoHTML=`<div class="cod-text" style="font-size:11px">${f.turnoRaw.substring(0,30)}</div>`
+    }
+
+    const rowCls=p.prioridad==='ALTA'?'row-alta':p.prioridad==='MEDIA'?'row-media':''
+
+    return `<tr class="${rowCls}">
+      <td><span class="orden-badge ${obCls}">${i+1}</span></td>
+      <td>
+        <div class="c-name">${f.cliente||'—'}</div>
+        ${f.dep?`<div class="c-sub">${f.dep}</div>`:''}
+      </td>
+      <td>
+        <div>${f.transporte||'—'}</div>
+        ${f.patente?`<div style="margin-top:3px"><span class="plate">${f.patente}</span></div>`:''}
+      </td>
+      <td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.nViaje||'—'}</span></td>
+      <td>${turnoHTML}</td>
+      <td><span class="pr-badge ${prCls}">${prLabel}</span></td>
+      <td>${alertaHTML}</td>
+      <td><span style="font-size:12px;color:var(--muted)">${f.darsena||'—'}</span></td>
+      <td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.bultos||'—'}</span></td>
+      <td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.pallets||'—'}</span></td>
+    </tr>`
+  }).join('')
+}
+
+function setFiltro(f, btn) {
+  filtroActivo=f
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'))
+  btn.classList.add('active')
+  renderTabla()
+}
+
+// ─────────────────────────────────────────────────────────
+//  INIT
+// ─────────────────────────────────────────────────────────
+cargarDatos()
+// Auto-refresh cada 5 minutos
+setInterval(cargarDatos, 5*60*1000)
+</script>
+</body>
+</html>
