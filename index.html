@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Torre de Control — Colectas PL3</title>
+<title>Torre de Control - Colectas PL3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
@@ -94,50 +95,50 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 <body>
 <div id="topbar">
   <div class="logo">
-    <div class="logo-icon">🚛</div>
-    <div><div class="logo-name">TORRE DE CONTROL</div><div class="logo-sub">Colectas · PL3 Pilar</div></div>
+    <div class="logo-icon">&#x1F69B;</div>
+    <div><div class="logo-name">TORRE DE CONTROL</div><div class="logo-sub">Colectas &middot; PL3 Pilar</div></div>
   </div>
   <div style="text-align:right"><div id="clock">--:--:--</div><div id="date-lbl"></div></div>
   <div style="display:flex;align-items:center;gap:12px">
-    <div id="sync-status">—</div>
-    <button id="btn-sync" onclick="cargarDatos()">↻ Actualizar</button>
+    <div id="sync-status">&#8212;</div>
+    <button id="btn-sync" onclick="cargarDatos()">&#8635; Actualizar</button>
   </div>
 </div>
 
 <div id="kpis">
-  <div class="kpi"><div class="kpi-val c-teal" id="k-total">—</div><div class="kpi-lbl">Cola activa</div></div>
-  <div class="kpi"><div class="kpi-val c-red"  id="k-alta">—</div><div class="kpi-lbl">Prioridad Alta</div></div>
-  <div class="kpi"><div class="kpi-val c-amber" id="k-media">—</div><div class="kpi-lbl">Con turno</div></div>
-  <div class="kpi"><div class="kpi-val c-blue"  id="k-baja">—</div><div class="kpi-lbl">Sin turno</div></div>
-  <div class="kpi"><div class="kpi-val c-green" id="k-lib">—</div><div class="kpi-lbl">Liberados</div></div>
-  <div class="kpi"><div class="kpi-val c-orange" id="k-reprog">—</div><div class="kpi-lbl">Reprogramados</div></div>
+  <div class="kpi"><div class="kpi-val c-teal" id="k-total">&#8212;</div><div class="kpi-lbl">Cola activa</div></div>
+  <div class="kpi"><div class="kpi-val c-red"  id="k-alta">&#8212;</div><div class="kpi-lbl">Prioridad Alta</div></div>
+  <div class="kpi"><div class="kpi-val c-amber" id="k-media">&#8212;</div><div class="kpi-lbl">Con turno</div></div>
+  <div class="kpi"><div class="kpi-val c-blue"  id="k-baja">&#8212;</div><div class="kpi-lbl">Sin turno</div></div>
+  <div class="kpi"><div class="kpi-val c-green" id="k-lib">&#8212;</div><div class="kpi-lbl">Liberados</div></div>
+  <div class="kpi"><div class="kpi-val c-orange" id="k-reprog">&#8212;</div><div class="kpi-lbl">Reprogramados</div></div>
 </div>
 
 <div id="next-banner"><span style="color:var(--muted);font-size:13px">Cargando...</span></div>
 <div class="error-box" id="error-box"></div>
 
 <div id="tabs">
-  <button class="tab active" onclick="setTab('cola',this)">Cola activa <span class="tab-badge" id="badge-cola">—</span></button>
-  <button class="tab" onclick="setTab('historial',this)">Historial liberados <span class="tab-badge" id="badge-hist">—</span></button>
-  <button class="tab" onclick="setTab('reprogramados',this)">Reprogramados <span class="tab-badge" id="badge-reprog">—</span></button>
+  <button class="tab active" onclick="setTab('cola',this)">Cola activa <span class="tab-badge" id="badge-cola">&#8212;</span></button>
+  <button class="tab" onclick="setTab('historial',this)">Historial liberados <span class="tab-badge" id="badge-hist">&#8212;</span></button>
+  <button class="tab" onclick="setTab('reprogramados',this)">Reprogramados <span class="tab-badge" id="badge-reprog">&#8212;</span></button>
 </div>
 
 <div id="filter-bar">
   <span class="filter-label">Prioridad:</span>
   <button class="fbtn active" onclick="setFiltro('todos',this)">Todos</button>
-  <button class="fbtn" onclick="setFiltro('ALTA',this)">🔴 Alta</button>
-  <button class="fbtn" onclick="setFiltro('MEDIA',this)">🟡 Con turno</button>
-  <button class="fbtn" onclick="setFiltro('BAJA',this)">⚪ Sin turno</button>
+  <button class="fbtn" onclick="setFiltro('ALTA',this)">&#x1F534; Alta</button>
+  <button class="fbtn" onclick="setFiltro('MEDIA',this)">&#x1F7E1; Con turno</button>
+  <button class="fbtn" onclick="setFiltro('BAJA',this)">&#x26AA; Sin turno</button>
   <span id="result-count"></span>
 </div>
 
 <div id="table-wrap">
-  <div id="estado-box"><span class="spin">⟳</span> Conectando con Google Sheets...</div>
+  <div id="estado-box"><span class="spin">&#8999;</span> Conectando con Google Sheets...</div>
   <table id="tabla" style="display:none">
     <thead><tr>
-      <th>#</th><th>Cliente</th><th>Transporte / Patente</th><th>N° Viaje</th>
+      <th>#</th><th>Cliente</th><th>Transporte / Patente</th><th>N&#xB0; Viaje</th>
       <th>Turno detectado</th><th>Prioridad</th><th>Alerta</th>
-      <th>Dársena</th><th>Bultos</th><th>Pallets</th><th>Detalle</th>
+      <th>D&#xE1;rsena</th><th>Bultos</th><th>Pallets</th><th>Detalle</th>
     </tr></thead>
     <tbody id="tbody"></tbody>
   </table>
@@ -145,243 +146,396 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 </div>
 
 <script>
-const SHEET_ID = '1qSptp0U_8fuo_bAcsQtsLl5ROVzCN44kZHKuEHC24vI'
-const GID      = '2114457503'
+var SHEET_ID = '1qSptp0U_8fuo_bAcsQtsLl5ROVzCN44kZHKuEHC24vI';
+var GID      = '2114457503';
 
-// ── PARSER DE TURNO ───────────────────────────────────────────
+// FIX 2: Parser mejorado - detecta "17 Hs - Envio #69202578" correctamente
 function parseTurno(raw) {
-  const r={horaTexto:null,horaMin:null,prioridad:'BAJA',tipoTurno:'LIBRE',codigo:null}
-  if (!raw||!raw.trim()) return r
-  const t=raw.trim()
-  if (/prioridad\s+de\s+carga|dar\s+prioridad|urgente/i.test(t)){r.prioridad='ALTA';r.tipoTurno='PRIORIDAD'}
-  const m1=t.match(/\b(\d{1,2}):(\d{2})\b/)
-  if (m1){const hh=parseInt(m1[1]),mm=parseInt(m1[2]);if(hh<=23&&mm<=59){r.horaTexto=`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}`;r.horaMin=hh*60+mm;if(r.tipoTurno!=='PRIORIDAD')r.tipoTurno='HORA'}}
-  if (!r.horaTexto){for(const p of t.split(/[\s\-–\/]+/)){if(/^\d{7,}$/.test(p))continue;const m2=p.match(/^(\d{1,2})\s*[hH][sS]?$/);if(m2){const hh=parseInt(m2[1]);if(hh<=23){r.horaTexto=`${String(hh).padStart(2,'0')}:00`;r.horaMin=hh*60;if(r.tipoTurno!=='PRIORIDAD')r.tipoTurno='HORA';break}}}}
-  const mov=t.match(/\b(MOV[\w\d]+)\b/i);if(mov)r.codigo=mov[1].toUpperCase()
-  if(!r.codigo){const n=t.match(/\b(\d{6,})\b/);if(n)r.codigo=n[1]}
-  if(r.codigo&&r.tipoTurno==='LIBRE')r.tipoTurno='COD'
-  if(r.prioridad!=='ALTA')r.prioridad=(r.horaTexto||r.codigo)?'MEDIA':'BAJA'
-  return r
-}
-function calcularAlerta(horaMin){
-  if(horaMin===null)return null
-  const n=new Date(),ahoraMin=n.getHours()*60+n.getMinutes(),d=horaMin-ahoraMin
-  if(d<0)return 'ROJO';if(d<=30)return 'ROJO';if(d<=60)return 'AMARILLO';return 'VERDE'
-}
-function scoreOrden(prioridad,horaMin){
-  if(prioridad==='ALTA')return horaMin!==null?100000-horaMin:109999
-  if(prioridad==='MEDIA')return horaMin!==null?50000-horaMin:40001
-  return 0
-}
+  var r = {horaTexto:null, horaMin:null, prioridad:'BAJA', tipoTurno:'LIBRE', codigo:null};
+  if (!raw || !raw.trim()) return r;
+  var t = raw.trim();
 
-// ── RELOJ ─────────────────────────────────────────────────────
-function tickClock(){
-  const now=new Date()
-  document.getElementById('clock').textContent=now.toLocaleTimeString('es-AR',{hour12:false})
-  const s=now.toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})
-  document.getElementById('date-lbl').textContent=s.charAt(0).toUpperCase()+s.slice(1)
-}
-setInterval(tickClock,1000);tickClock()
-
-// ── ESTADO GLOBAL ─────────────────────────────────────────────
-let COLA=[],HISTORIAL=[],REPROGRAMADOS=[],filtroActivo='todos',tabActivo='cola'
-
-// ── PROCESAR DATOS ────────────────────────────────────────────
-function procesarData(data){
-  const cols=data.table.cols.map(c=>(c.label||'').toLowerCase().trim())
-  const idx={
-    transporte:cols.findIndex(c=>c.includes('transporte')),
-    patente:cols.findIndex(c=>c.includes('patente')),
-    dep:cols.findIndex(c=>c.includes('dep')),
-    nViaje:cols.findIndex(c=>c.includes('n°')||c.includes('viaje')||c.includes('nro')),
-    cliente:cols.findIndex(c=>c.includes('cliente')),
-    turno:cols.findIndex(c=>c.includes('turno')),
-    bultos:cols.findIndex(c=>c.includes('bulto')),
-    pallets:cols.findIndex(c=>c.includes('pallet')),
-    darsena:cols.findIndex(c=>c.includes('rsena')||c.includes('darsena')),
-    detalle:cols.findIndex(c=>c.includes('detalle')),
+  // Prioridad alta
+  if (/prioridad\s+de\s+carga|dar\s+prioridad|urgente/i.test(t)) {
+    r.prioridad = 'ALTA'; r.tipoTurno = 'PRIORIDAD';
   }
-  if(idx.transporte<0)idx.transporte=1
-  if(idx.patente<0)idx.patente=2
-  if(idx.dep<0)idx.dep=3
-  if(idx.nViaje<0)idx.nViaje=5
-  if(idx.cliente<0)idx.cliente=6
-  if(idx.turno<0)idx.turno=7
-  if(idx.bultos<0)idx.bultos=8
-  if(idx.pallets<0)idx.pallets=9
-  if(idx.darsena<0)idx.darsena=10
-  if(idx.detalle<0)idx.detalle=13
 
-  const cel=(row,i)=>i>=0?(row.c[i]?.v??row.c[i]?.f??''):''
-  COLA=[];HISTORIAL=[];REPROGRAMADOS=[]
-
-  for(const row of data.table.rows){
-    const cliente=String(cel(row,idx.cliente)||'').trim()
-    const nViaje=String(cel(row,idx.nViaje)||'').trim()
-    if(!cliente&&!nViaje)continue
-    const turnoRaw=String(cel(row,idx.turno)||'').trim()
-    const detalle=String(cel(row,idx.detalle)||'').trim()
-    const parsed=parseTurno(turnoRaw)
-    const alerta=calcularAlerta(parsed.horaMin)
-    const score=scoreOrden(parsed.prioridad,parsed.horaMin)
-    const fila={
-      transporte:String(cel(row,idx.transporte)||'').trim(),
-      patente:String(cel(row,idx.patente)||'').trim(),
-      dep:String(cel(row,idx.dep)||'').trim(),
-      nViaje,cliente,turnoRaw,detalle,
-      bultos:String(cel(row,idx.bultos)||'').trim(),
-      pallets:String(cel(row,idx.pallets)||'').trim(),
-      darsena:String(cel(row,idx.darsena)||'').trim(),
-      parsed,alerta,score
+  // Hora HH:MM exacto (ej: 14:00)
+  var m1 = t.match(/\b(\d{1,2}):(\d{2})\b/);
+  if (m1) {
+    var hh = parseInt(m1[1]), mm = parseInt(m1[2]);
+    if (hh <= 23 && mm <= 59) {
+      r.horaTexto = pad(hh) + ':' + pad(mm);
+      r.horaMin = hh * 60 + mm;
+      if (r.tipoTurno !== 'PRIORIDAD') r.tipoTurno = 'HORA';
     }
-    if(/^liberado$/i.test(detalle))HISTORIAL.push(fila)
-    else if(/^reprogramado$/i.test(detalle))REPROGRAMADOS.push(fila)
-    else COLA.push(fila)
   }
 
-  COLA.sort((a,b)=>b.score-a.score)
-  HISTORIAL.reverse()
-
-  document.getElementById('badge-cola').textContent=COLA.length
-  document.getElementById('badge-hist').textContent=HISTORIAL.length
-  document.getElementById('badge-reprog').textContent=REPROGRAMADOS.length
-  const ts=new Date().toLocaleTimeString('es-AR',{hour12:false})
-  document.getElementById('sync-status').textContent=`✓ ${ts}`
-  renderTodo()
-  document.getElementById('btn-sync').disabled=false
-  document.getElementById('btn-sync').textContent='↻ Actualizar'
-}
-
-function mostrarError(msg){
-  document.getElementById('estado-box').style.display='none'
-  const eb=document.getElementById('error-box')
-  eb.style.display='block'
-  eb.innerHTML=`⚠ ${msg}<br><small style="opacity:.7;line-height:1.8">Verificá: Archivo → Publicar en la web → Publicar (en el Sheet)</small>`
-  document.getElementById('sync-status').textContent='⚠ Error'
-  document.getElementById('btn-sync').disabled=false
-  document.getElementById('btn-sync').textContent='↻ Actualizar'
-}
-
-// ── CARGA VÍA JSONP (sin CORS) ────────────────────────────────
-function cargarDatos(){
-  document.getElementById('btn-sync').disabled=true
-  document.getElementById('btn-sync').textContent='⟳ Actualizando...'
-  document.getElementById('sync-status').textContent='Conectando...'
-  document.getElementById('estado-box').style.display='block'
-  document.getElementById('estado-box').innerHTML='<span class="spin">⟳</span> Cargando datos...'
-  document.getElementById('tabla').style.display='none'
-  document.getElementById('error-box').style.display='none'
-
-  // Limpiar script anterior
-  const old=document.getElementById('gsheet-script')
-  if(old)old.remove()
-
-  // Timeout 12 segundos
-  const timer=setTimeout(()=>mostrarError('Tiempo de espera agotado. Hacé click en Actualizar.'),12000)
-
-  // Callback global que Google llama
-  window.__sheetCB=function(data){
-    clearTimeout(timer)
-    delete window.__sheetCB
-    try{
-      if(!data||!data.table)throw new Error('Respuesta vacía')
-      procesarData(data)
-    }catch(e){mostrarError(e.message)}
-  }
-
-  // Inyectar script JSONP — Google llama a window.__sheetCB con los datos
-  const s=document.createElement('script')
-  s.id='gsheet-script'
-  s.onerror=()=>{clearTimeout(timer);mostrarError('No se pudo conectar con Google Sheets.')}
-  s.src=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:__sheetCB&gid=${GID}&headers=1`
-  document.head.appendChild(s)
-}
-
-// ── RENDER ────────────────────────────────────────────────────
-function renderTodo(){
-  document.getElementById('k-total').textContent=COLA.length
-  document.getElementById('k-alta').textContent=COLA.filter(f=>f.parsed.prioridad==='ALTA').length
-  document.getElementById('k-media').textContent=COLA.filter(f=>f.parsed.prioridad==='MEDIA').length
-  document.getElementById('k-baja').textContent=COLA.filter(f=>f.parsed.prioridad==='BAJA').length
-  document.getElementById('k-lib').textContent=HISTORIAL.length
-  document.getElementById('k-reprog').textContent=REPROGRAMADOS.length
-  renderBanner();renderTabla()
-}
-
-function renderBanner(){
-  const banner=document.getElementById('next-banner')
-  const f=COLA[0]
-  if(!f){banner.innerHTML='<span style="color:var(--green);font-size:13px">✓ Sin colectas pendientes.</span>';return}
-  const p=f.parsed
-  const alColor=f.alerta==='ROJO'?'var(--red)':f.alerta==='AMARILLO'?'var(--amber)':'var(--teal)'
-  const prBadge=p.prioridad==='ALTA'?`<span class="pr-badge pr-alta">🔴 PRIORIDAD ALTA</span>`:p.prioridad==='MEDIA'?`<span class="pr-badge pr-media">🟡 CON TURNO</span>`:`<span class="pr-badge pr-baja">Sin turno</span>`
-  let turnoBox=''
-  if(p.horaTexto)turnoBox=`<div class="next-turno-box"><div class="turno-lbl">Turno en el cliente</div><div class="turno-hora">${p.horaTexto} hs</div><div id="countdown" style="color:${alColor}"></div></div>`
-  banner.innerHTML=`<div class="next-dot"></div><div style="flex:1;min-width:0"><div class="next-label">▶ Próximo para cargar</div><div class="next-client">${f.cliente||'—'}</div><div class="next-meta">${f.transporte?`<span class="chip">${f.transporte}</span>`:''} ${f.patente?`<span class="chip">${f.patente}</span>`:''} ${f.nViaje?`<span class="chip">Viaje #${f.nViaje}</span>`:''} ${f.darsena?`<span class="chip">Dársena ${f.darsena}</span>`:''} ${prBadge}</div>${f.turnoRaw?`<div style="font-size:11px;color:var(--muted);margin-top:5px">📋 ${f.turnoRaw}</div>`:''}</div>${turnoBox}`
-  if(p.horaTexto)startCountdown(p.horaMin)
-}
-
-let cdInterval=null
-function startCountdown(horaMin){
-  if(cdInterval)clearInterval(cdInterval)
-  function tick(){
-    const el=document.getElementById('countdown');if(!el){clearInterval(cdInterval);return}
-    const now=new Date(),diffSec=(horaMin-now.getHours()*60-now.getMinutes())*60-now.getSeconds()
-    if(diffSec<0){el.textContent='⚠ TURNO VENCIDO';return}
-    const h=Math.floor(diffSec/3600),m=Math.floor((diffSec%3600)/60),s=diffSec%60
-    el.textContent=`⏱ ${h>0?h+':':''}${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} para el turno`
-  }
-  tick();cdInterval=setInterval(tick,1000)
-}
-
-function renderTabla(){
-  const estado=document.getElementById('estado-box')
-  const tabla=document.getElementById('tabla')
-  const empty=document.getElementById('empty-msg')
-  const filterBar=document.getElementById('filter-bar')
-  estado.style.display='none'
-  const esCola=tabActivo==='cola'
-  const esHistorial=tabActivo==='historial'
-  const esReprog=tabActivo==='reprogramados'
-  filterBar.style.display=esCola?'flex':'none'
-  tabla.className=esCola?'':'historial'
-  let fuente=esHistorial?HISTORIAL:esReprog?REPROGRAMADOS:COLA
-  if(esCola&&filtroActivo!=='todos')fuente=fuente.filter(f=>f.parsed.prioridad===filtroActivo)
-  document.getElementById('result-count').textContent=`${fuente.length} colecta${fuente.length!==1?'s':''}`
-  if(!fuente.length){tabla.style.display='none';empty.style.display='block';return}
-  tabla.style.display='table';empty.style.display='none'
-  const thead=tabla.querySelector('thead tr')
-  thead.cells[5].textContent=esCola?'Prioridad':'Estado'
-  thead.cells[6].textContent=esCola?'Alerta':'Turno'
-
-  document.getElementById('tbody').innerHTML=fuente.map((f,i)=>{
-    const p=f.parsed
-    const obCls=i===0?'ob-1':i===1?'ob-2':'ob-n'
-    let turnoHTML='<span style="color:var(--muted);font-size:11px">Sin turno</span>'
-    if(p.horaTexto){turnoHTML=`<div class="hora-badge">${p.horaTexto} hs</div>`;if(p.codigo)turnoHTML+=`<div class="cod-text">${p.codigo}</div>`}
-    else if(p.codigo)turnoHTML=`<div class="cod-text" style="font-size:12px">${p.codigo}</div>`
-    else if(f.turnoRaw)turnoHTML=`<div class="cod-text" style="font-size:11px">${f.turnoRaw.substring(0,35)}</div>`
-
-    if(!esCola){
-      const badge=esReprog
-        ?`<span class="pr-badge badge-rep">🔄 Reprogramado</span>`
-        :`<span class="pr-badge badge-lib">✓ Liberado</span>`
-      return `<tr><td><span class="orden-badge ob-n">${i+1}</span></td><td><div class="c-name">${f.cliente||'—'}</div>${f.dep?`<div class="c-sub">${f.dep}</div>`:''}</td><td><div>${f.transporte||'—'}</div>${f.patente?`<div style="margin-top:3px"><span class="plate">${f.patente}</span></div>`:''}</td><td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.nViaje||'—'}</span></td><td>${turnoHTML}</td><td>${badge}</td><td><span style="font-size:11px;color:var(--muted)">${f.turnoRaw||'—'}</span></td><td><span style="font-size:12px;color:var(--muted)">${f.darsena||'—'}</span></td><td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.bultos||'—'}</span></td><td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.pallets||'—'}</span></td><td><span style="font-size:11px;color:var(--muted)">${f.detalle||'—'}</span></td></tr>`
+  // FIX: Hora "N Hs" - busca el patron numero+hs en cualquier parte del texto
+  // Funciona con: "17 Hs - Envio #123", "9hs", "12 HS", "17Hs"
+  if (!r.horaTexto) {
+    // Busca un numero de 1-2 digitos seguido opcionalmente de espacio y luego hs/HS/Hs
+    // El \b asegura que no sea parte de un numero mas largo
+    var m2 = t.match(/\b([1-9]|1\d|2[0-3])\s*[hH][sS]?\b/);
+    if (m2) {
+      var hh2 = parseInt(m2[1]);
+      r.horaTexto = pad(hh2) + ':00';
+      r.horaMin = hh2 * 60;
+      if (r.tipoTurno !== 'PRIORIDAD') r.tipoTurno = 'HORA';
     }
-    const prCls=p.prioridad==='ALTA'?'pr-alta':p.prioridad==='MEDIA'?'pr-media':'pr-baja'
-    const prLabel=p.prioridad==='ALTA'?'Alta':p.prioridad==='MEDIA'?'Media':'Baja'
-    let alertaHTML='<span style="color:var(--muted)">—</span>'
-    if(f.alerta)alertaHTML=`<span class="al-dot al-${f.alerta.toLowerCase()}"></span><span class="al-label ${f.alerta.toLowerCase()}">${f.alerta==='ROJO'?'Riesgo':f.alerta==='AMARILLO'?'Atención':'OK'}</span>`
-    const rowCls=p.prioridad==='ALTA'?'row-alta':p.prioridad==='MEDIA'?'row-media':''
-    return `<tr class="${rowCls}"><td><span class="orden-badge ${obCls}">${i+1}</span></td><td><div class="c-name">${f.cliente||'—'}</div>${f.dep?`<div class="c-sub">${f.dep}</div>`:''}</td><td><div>${f.transporte||'—'}</div>${f.patente?`<div style="margin-top:3px"><span class="plate">${f.patente}</span></div>`:''}</td><td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.nViaje||'—'}</span></td><td>${turnoHTML}</td><td><span class="pr-badge ${prCls}">${prLabel}</span></td><td>${alertaHTML}</td><td><span style="font-size:12px;color:var(--muted)">${f.darsena||'—'}</span></td><td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.bultos||'—'}</span></td><td><span style="font-family:'DM Mono',monospace;font-size:12px">${f.pallets||'—'}</span></td><td><span style="font-size:11px;color:var(--muted)">${f.detalle||'—'}</span></td></tr>`
-  }).join('')
+  }
+
+  // Codigo: MOV..., numeros largos (6+ digitos)
+  var mov = t.match(/\b(MOV[\w\d]+)\b/i);
+  if (mov) r.codigo = mov[1].toUpperCase();
+  if (!r.codigo) { var n = t.match(/\b(\d{6,})\b/); if (n) r.codigo = n[1]; }
+  if (r.codigo && r.tipoTurno === 'LIBRE') r.tipoTurno = 'COD';
+
+  if (r.prioridad !== 'ALTA')
+    r.prioridad = (r.horaTexto || r.codigo) ? 'MEDIA' : 'BAJA';
+
+  return r;
 }
 
-function setFiltro(f,btn){filtroActivo=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTabla()}
-function setTab(t,btn){tabActivo=t;document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTabla()}
+function pad(n) { return String(n).padStart(2, '0'); }
 
-cargarDatos()
-setInterval(cargarDatos,5*60*1000)
+function calcularAlerta(horaMin) {
+  if (horaMin === null) return null;
+  var now = new Date(), ahoraMin = now.getHours() * 60 + now.getMinutes();
+  var d = horaMin - ahoraMin;
+  if (d < 0) return 'ROJO';
+  if (d <= 30) return 'ROJO';
+  if (d <= 60) return 'AMARILLO';
+  return 'VERDE';
+}
+
+function scoreOrden(prioridad, horaMin) {
+  if (prioridad === 'ALTA')  return horaMin !== null ? 100000 - horaMin : 109999;
+  if (prioridad === 'MEDIA') return horaMin !== null ? 50000  - horaMin : 40001;
+  return 0;
+}
+
+// FIX 1: Helpers de fecha para filtrar solo hoy
+function hoyStr() {
+  var now = new Date();
+  return now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+}
+
+// Convierte lo que Google devuelve en la celda de fecha a "YYYY-MM-DD"
+function parseFechaSheet(val) {
+  if (!val) return null;
+  var s = String(val);
+  // Google Visualization devuelve fechas como "Date(2026,5,5)" - mes es 0-indexed
+  var dMatch = s.match(/Date\((\d+),(\d+),(\d+)\)/);
+  if (dMatch) {
+    var y = parseInt(dMatch[1]), m = parseInt(dMatch[2]) + 1, d = parseInt(dMatch[3]);
+    return y + '-' + pad(m) + '-' + pad(d);
+  }
+  // Formato d/m/yyyy
+  var slashMatch = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (slashMatch) {
+    return slashMatch[3] + '-' + pad(parseInt(slashMatch[2])) + '-' + pad(parseInt(slashMatch[1]));
+  }
+  // Ya viene YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.substring(0, 10);
+  return null;
+}
+
+// Reloj
+function tickClock() {
+  var now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('es-AR', {hour12:false});
+  var s = now.toLocaleDateString('es-AR', {weekday:'long', day:'numeric', month:'long'});
+  document.getElementById('date-lbl').textContent = s.charAt(0).toUpperCase() + s.slice(1);
+}
+setInterval(tickClock, 1000); tickClock();
+
+var COLA = [], HISTORIAL = [], REPROGRAMADOS = [], filtroActivo = 'todos', tabActivo = 'cola';
+
+function procesarData(data) {
+  var cols = data.table.cols.map(function(c){ return (c.label||'').toLowerCase().trim(); });
+  var idx = {
+    fecha:      cols.findIndex(function(c){ return c.includes('fecha'); }),
+    transporte: cols.findIndex(function(c){ return c.includes('transporte'); }),
+    patente:    cols.findIndex(function(c){ return c.includes('patente'); }),
+    dep:        cols.findIndex(function(c){ return c.includes('dep'); }),
+    nViaje:     cols.findIndex(function(c){ return c.includes('n\u00b0') || c.includes('viaje') || c.includes('nro'); }),
+    cliente:    cols.findIndex(function(c){ return c.includes('cliente'); }),
+    turno:      cols.findIndex(function(c){ return c.includes('turno'); }),
+    bultos:     cols.findIndex(function(c){ return c.includes('bulto'); }),
+    pallets:    cols.findIndex(function(c){ return c.includes('pallet'); }),
+    darsena:    cols.findIndex(function(c){ return c.includes('rsena') || c.includes('darsena'); }),
+    detalle:    cols.findIndex(function(c){ return c.includes('detalle'); }),
+  };
+  // Fallback posicional
+  if (idx.fecha      < 0) idx.fecha      = 0;
+  if (idx.transporte < 0) idx.transporte = 1;
+  if (idx.patente    < 0) idx.patente    = 2;
+  if (idx.dep        < 0) idx.dep        = 3;
+  if (idx.nViaje     < 0) idx.nViaje     = 5;
+  if (idx.cliente    < 0) idx.cliente    = 6;
+  if (idx.turno      < 0) idx.turno      = 7;
+  if (idx.bultos     < 0) idx.bultos     = 8;
+  if (idx.pallets    < 0) idx.pallets    = 9;
+  if (idx.darsena    < 0) idx.darsena    = 10;
+  if (idx.detalle    < 0) idx.detalle    = 13;
+
+  function cel(row, i) {
+    if (i < 0) return '';
+    var c = row.c[i];
+    if (!c) return '';
+    return c.v !== null && c.v !== undefined ? c.v : (c.f || '');
+  }
+
+  COLA = []; HISTORIAL = []; REPROGRAMADOS = [];
+  var hoy = hoyStr();
+
+  for (var i = 0; i < data.table.rows.length; i++) {
+    var row = data.table.rows[i];
+    var cliente = String(cel(row, idx.cliente) || '').trim();
+    var nViaje  = String(cel(row, idx.nViaje)  || '').trim();
+    if (!cliente && !nViaje) continue;
+
+    // FIX 1: Filtrar por fecha de hoy
+    var fechaVal = cel(row, idx.fecha);
+    var fechaFila = parseFechaSheet(fechaVal);
+    if (fechaFila && fechaFila !== hoy) continue; // saltear filas que no son de hoy
+
+    var turnoRaw = String(cel(row, idx.turno)   || '').trim();
+    var detalle  = String(cel(row, idx.detalle) || '').trim();
+    var parsed   = parseTurno(turnoRaw);
+    var alerta   = calcularAlerta(parsed.horaMin);
+    var score    = scoreOrden(parsed.prioridad, parsed.horaMin);
+
+    var fila = {
+      transporte: String(cel(row, idx.transporte) || '').trim(),
+      patente:    String(cel(row, idx.patente)    || '').trim(),
+      dep:        String(cel(row, idx.dep)        || '').trim(),
+      nViaje: nViaje, cliente: cliente, turnoRaw: turnoRaw, detalle: detalle,
+      bultos:   String(cel(row, idx.bultos)  || '').trim(),
+      pallets:  String(cel(row, idx.pallets) || '').trim(),
+      darsena:  String(cel(row, idx.darsena) || '').trim(),
+      parsed: parsed, alerta: alerta, score: score
+    };
+
+    if (/^liberado$/i.test(detalle))      HISTORIAL.push(fila);
+    else if (/^reprogramado$/i.test(detalle)) REPROGRAMADOS.push(fila);
+    else COLA.push(fila);
+  }
+
+  COLA.sort(function(a,b){ return b.score - a.score; });
+  HISTORIAL.reverse();
+
+  document.getElementById('badge-cola').textContent  = COLA.length;
+  document.getElementById('badge-hist').textContent  = HISTORIAL.length;
+  document.getElementById('badge-reprog').textContent= REPROGRAMADOS.length;
+  var ts = new Date().toLocaleTimeString('es-AR', {hour12:false});
+  document.getElementById('sync-status').textContent = '\u2713 ' + ts;
+  renderTodo();
+  document.getElementById('btn-sync').disabled = false;
+  document.getElementById('btn-sync').textContent = '\u8635 Actualizar';
+}
+
+function mostrarError(msg) {
+  document.getElementById('estado-box').style.display = 'none';
+  var eb = document.getElementById('error-box');
+  eb.style.display = 'block';
+  eb.innerHTML = '&#9888; ' + msg + '<br><small style="opacity:.7;line-height:1.8">Verificá: Archivo &rarr; Publicar en la web &rarr; Publicar</small>';
+  document.getElementById('sync-status').textContent = '&#9888; Error';
+  document.getElementById('btn-sync').disabled = false;
+  document.getElementById('btn-sync').textContent = '\u21BB Actualizar';
+}
+
+function cargarDatos() {
+  document.getElementById('btn-sync').disabled = true;
+  document.getElementById('btn-sync').textContent = '\u21BB Actualizando...';
+  document.getElementById('sync-status').textContent = 'Conectando...';
+  document.getElementById('estado-box').style.display = 'block';
+  document.getElementById('estado-box').innerHTML = '<span class="spin">&#8999;</span> Cargando datos...';
+  document.getElementById('tabla').style.display = 'none';
+  document.getElementById('error-box').style.display = 'none';
+
+  var old = document.getElementById('gsheet-script');
+  if (old) old.remove();
+
+  var timer = setTimeout(function(){
+    mostrarError('Tiempo de espera agotado. Intentá de nuevo.');
+  }, 12000);
+
+  window.__sheetCB = function(data) {
+    clearTimeout(timer);
+    delete window.__sheetCB;
+    try {
+      if (!data || !data.table) throw new Error('Respuesta vacia');
+      procesarData(data);
+    } catch(e) { mostrarError(e.message); }
+  };
+
+  var s = document.createElement('script');
+  s.id = 'gsheet-script';
+  s.onerror = function(){ clearTimeout(timer); mostrarError('No se pudo conectar con Google Sheets.'); };
+  s.src = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json,responseHandler:__sheetCB&gid=' + GID + '&headers=1';
+  document.head.appendChild(s);
+}
+
+function renderTodo() {
+  document.getElementById('k-total').textContent  = COLA.length;
+  document.getElementById('k-alta').textContent   = COLA.filter(function(f){ return f.parsed.prioridad === 'ALTA'; }).length;
+  document.getElementById('k-media').textContent  = COLA.filter(function(f){ return f.parsed.prioridad === 'MEDIA'; }).length;
+  document.getElementById('k-baja').textContent   = COLA.filter(function(f){ return f.parsed.prioridad === 'BAJA'; }).length;
+  document.getElementById('k-lib').textContent    = HISTORIAL.length;
+  document.getElementById('k-reprog').textContent = REPROGRAMADOS.length;
+  renderBanner();
+  renderTabla();
+}
+
+function renderBanner() {
+  var banner = document.getElementById('next-banner');
+  var f = COLA[0];
+  if (!f) { banner.innerHTML = '<span style="color:var(--green);font-size:13px">&#10003; Sin colectas pendientes hoy.</span>'; return; }
+  var p = f.parsed;
+  var alColor = f.alerta === 'ROJO' ? 'var(--red)' : f.alerta === 'AMARILLO' ? 'var(--amber)' : 'var(--teal)';
+  var prBadge = p.prioridad === 'ALTA'
+    ? '<span class="pr-badge pr-alta">&#x1F534; PRIORIDAD ALTA</span>'
+    : p.prioridad === 'MEDIA'
+    ? '<span class="pr-badge pr-media">&#x1F7E1; CON TURNO</span>'
+    : '<span class="pr-badge pr-baja">Sin turno</span>';
+  var turnoBox = '';
+  if (p.horaTexto) {
+    turnoBox = '<div class="next-turno-box"><div class="turno-lbl">Turno en el cliente</div><div class="turno-hora">' + p.horaTexto + ' hs</div><div id="countdown" style="color:' + alColor + '"></div></div>';
+  }
+  banner.innerHTML =
+    '<div class="next-dot"></div>' +
+    '<div style="flex:1;min-width:0">' +
+      '<div class="next-label">&#9654; Proximo para cargar</div>' +
+      '<div class="next-client">' + (f.cliente || '&#8212;') + '</div>' +
+      '<div class="next-meta">' +
+        (f.transporte ? '<span class="chip">' + f.transporte + '</span>' : '') +
+        (f.patente    ? '<span class="chip">' + f.patente    + '</span>' : '') +
+        (f.nViaje     ? '<span class="chip">Viaje #' + f.nViaje + '</span>' : '') +
+        (f.darsena    ? '<span class="chip">D&aacute;rsena ' + f.darsena + '</span>' : '') +
+        prBadge +
+      '</div>' +
+      (f.turnoRaw ? '<div style="font-size:11px;color:var(--muted);margin-top:5px">&#128203; ' + f.turnoRaw + '</div>' : '') +
+    '</div>' + turnoBox;
+  if (p.horaTexto) startCountdown(p.horaMin);
+}
+
+var cdInterval = null;
+function startCountdown(horaMin) {
+  if (cdInterval) clearInterval(cdInterval);
+  function tick() {
+    var el = document.getElementById('countdown');
+    if (!el) { clearInterval(cdInterval); return; }
+    var now = new Date();
+    var diffSec = (horaMin - now.getHours() * 60 - now.getMinutes()) * 60 - now.getSeconds();
+    if (diffSec < 0) { el.textContent = '&#9888; TURNO VENCIDO'; return; }
+    var h = Math.floor(diffSec / 3600), m = Math.floor((diffSec % 3600) / 60), s = diffSec % 60;
+    el.textContent = '&#9200; ' + (h > 0 ? h + ':' : '') + pad(m) + ':' + pad(s) + ' para el turno';
+  }
+  tick(); cdInterval = setInterval(tick, 1000);
+}
+
+function renderTabla() {
+  var estado    = document.getElementById('estado-box');
+  var tabla     = document.getElementById('tabla');
+  var empty     = document.getElementById('empty-msg');
+  var filterBar = document.getElementById('filter-bar');
+  estado.style.display = 'none';
+
+  var esCola      = tabActivo === 'cola';
+  var esHistorial = tabActivo === 'historial';
+  var esReprog    = tabActivo === 'reprogramados';
+
+  filterBar.style.display = esCola ? 'flex' : 'none';
+  tabla.className = esCola ? '' : 'historial';
+
+  var fuente = esHistorial ? HISTORIAL : esReprog ? REPROGRAMADOS : COLA;
+  if (esCola && filtroActivo !== 'todos')
+    fuente = fuente.filter(function(f){ return f.parsed.prioridad === filtroActivo; });
+
+  document.getElementById('result-count').textContent = fuente.length + ' colecta' + (fuente.length !== 1 ? 's' : '');
+
+  if (!fuente.length) { tabla.style.display = 'none'; empty.style.display = 'block'; return; }
+  tabla.style.display = 'table'; empty.style.display = 'none';
+
+  var thead = tabla.querySelector('thead tr');
+  thead.cells[5].textContent = esCola ? 'Prioridad' : 'Estado';
+  thead.cells[6].textContent = esCola ? 'Alerta' : 'Turno';
+
+  document.getElementById('tbody').innerHTML = fuente.map(function(f, i) {
+    var p = f.parsed;
+    var obCls = i === 0 ? 'ob-1' : i === 1 ? 'ob-2' : 'ob-n';
+
+    var turnoHTML = '<span style="color:var(--muted);font-size:11px">Sin turno</span>';
+    if (p.horaTexto) {
+      turnoHTML = '<div class="hora-badge">' + p.horaTexto + ' hs</div>';
+      if (p.codigo) turnoHTML += '<div class="cod-text">' + p.codigo + '</div>';
+    } else if (p.codigo) {
+      turnoHTML = '<div class="cod-text" style="font-size:12px">' + p.codigo + '</div>';
+    } else if (f.turnoRaw) {
+      turnoHTML = '<div class="cod-text" style="font-size:11px">' + f.turnoRaw.substring(0, 35) + '</div>';
+    }
+
+    var transpCol = '<div>' + (f.transporte || '&#8212;') + '</div>' +
+      (f.patente ? '<div style="margin-top:3px"><span class="plate">' + f.patente + '</span></div>' : '');
+    var clienteCol = '<div class="c-name">' + (f.cliente || '&#8212;') + '</div>' +
+      (f.dep ? '<div class="c-sub">' + f.dep + '</div>' : '');
+    var viajeCol = '<span style="font-family:\'DM Mono\',monospace;font-size:12px">' + (f.nViaje || '&#8212;') + '</span>';
+    var darsenaCol = '<span style="font-size:12px;color:var(--muted)">' + (f.darsena || '&#8212;') + '</span>';
+    var bultosCol  = '<span style="font-family:\'DM Mono\',monospace;font-size:12px">' + (f.bultos  || '&#8212;') + '</span>';
+    var palletsCol = '<span style="font-family:\'DM Mono\',monospace;font-size:12px">' + (f.pallets || '&#8212;') + '</span>';
+    var detalleCol = '<span style="font-size:11px;color:var(--muted)">' + (f.detalle || '&#8212;') + '</span>';
+
+    if (!esCola) {
+      var badge = esReprog
+        ? '<span class="pr-badge badge-rep">&#x1F504; Reprogramado</span>'
+        : '<span class="pr-badge badge-lib">&#10003; Liberado</span>';
+      return '<tr>' +
+        '<td><span class="orden-badge ob-n">' + (i+1) + '</span></td>' +
+        '<td>' + clienteCol + '</td><td>' + transpCol + '</td><td>' + viajeCol + '</td>' +
+        '<td>' + turnoHTML + '</td><td>' + badge + '</td>' +
+        '<td><span style="font-size:11px;color:var(--muted)">' + (f.turnoRaw || '&#8212;') + '</span></td>' +
+        '<td>' + darsenaCol + '</td><td>' + bultosCol + '</td><td>' + palletsCol + '</td><td>' + detalleCol + '</td>' +
+        '</tr>';
+    }
+
+    var prCls   = p.prioridad === 'ALTA' ? 'pr-alta' : p.prioridad === 'MEDIA' ? 'pr-media' : 'pr-baja';
+    var prLabel = p.prioridad === 'ALTA' ? 'Alta' : p.prioridad === 'MEDIA' ? 'Media' : 'Baja';
+    var alertaHTML = '<span style="color:var(--muted)">&#8212;</span>';
+    if (f.alerta) {
+      alertaHTML = '<span class="al-dot al-' + f.alerta.toLowerCase() + '"></span>' +
+        '<span class="al-label ' + f.alerta.toLowerCase() + '">' +
+        (f.alerta === 'ROJO' ? 'Riesgo' : f.alerta === 'AMARILLO' ? 'Atenci&oacute;n' : 'OK') + '</span>';
+    }
+    var rowCls = p.prioridad === 'ALTA' ? 'row-alta' : p.prioridad === 'MEDIA' ? 'row-media' : '';
+    return '<tr class="' + rowCls + '">' +
+      '<td><span class="orden-badge ' + obCls + '">' + (i+1) + '</span></td>' +
+      '<td>' + clienteCol + '</td><td>' + transpCol + '</td><td>' + viajeCol + '</td>' +
+      '<td>' + turnoHTML + '</td>' +
+      '<td><span class="pr-badge ' + prCls + '">' + prLabel + '</span></td>' +
+      '<td>' + alertaHTML + '</td>' +
+      '<td>' + darsenaCol + '</td><td>' + bultosCol + '</td><td>' + palletsCol + '</td><td>' + detalleCol + '</td>' +
+      '</tr>';
+  }).join('');
+}
+
+function setFiltro(f, btn) {
+  filtroActivo = f;
+  document.querySelectorAll('.fbtn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderTabla();
+}
+
+function setTab(t, btn) {
+  tabActivo = t;
+  document.querySelectorAll('.tab').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderTabla();
+}
+
+cargarDatos();
+setInterval(cargarDatos, 5 * 60 * 1000);
 </script>
 </body>
 </html>
