@@ -260,8 +260,9 @@ function celda(c) { return c ? (c.f !== undefined && c.f !== null ? c.f : c.v) :
 function celdaNum(c) { return (c && typeof c.v === 'number') ? c.v : null; }
 
 function filaAViaje(c, idx) {
-  const tiempoTxt = idx.tiempoUnif >= 0 ? celda(c[idx.tiempoUnif])
-                  : (idx.tiempoEfec >= 0 ? celda(c[idx.tiempoEfec]) : null);
+  const valUnif = idx.tiempoUnif >= 0 ? celda(c[idx.tiempoUnif]) : null;
+  const valEfec = idx.tiempoEfec >= 0 ? celda(c[idx.tiempoEfec]) : null;
+  const tiempoTxt = valUnif || valEfec; // usa "unificado" solo si esa fila tiene dato ahí; si no, cae en el otro
   return {
     fecha:             idx.fecha       >= 0 ? celda(c[idx.fecha])       : null,
     transporte:        idx.transporte  >= 0 ? celda(c[idx.transporte])  : '',
