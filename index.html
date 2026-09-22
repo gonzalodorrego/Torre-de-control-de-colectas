@@ -49,9 +49,12 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 #btn-refresh:hover{background:#f1f5f9}
 
 .filterbar{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 18px;margin-bottom:20px;flex-wrap:wrap}
+.filterbar-left{display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex:1}
 .daterange{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .daterange label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
 .daterange input{border:1px solid var(--border);border-radius:8px;padding:6px 9px;font-family:inherit;font-size:13px;color:var(--text)}
+.searchgroup{display:flex;align-items:center;gap:8px}
+.searchgroup input{border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-family:inherit;font-size:13px;color:var(--text);min-width:220px}
 .btn-ghost{background:transparent;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--muted);transition:all .15s}
 .btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
 
@@ -116,9 +119,15 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
   </div>
 
   <div class="filterbar">
-    <div class="daterange">
-      <label>Desde <input type="date" id="f-desde"/></label>
-      <label>Hasta <input type="date" id="f-hasta"/></label>
+    <div class="filterbar-left">
+      <div class="daterange">
+        <label>Desde <input type="date" id="f-desde"/></label>
+        <label>Hasta <input type="date" id="f-hasta"/></label>
+      </div>
+      <div class="searchgroup">
+        <input type="text" id="f-busqueda" placeholder="Buscar conductor, cliente, transporte..." onkeydown="if(event.key==='Enter') render();"/>
+        <button class="btn-ghost" onclick="render()">Buscar</button>
+      </div>
     </div>
     <button class="btn-ghost" onclick="limpiarFiltro()">Ver todo</button>
   </div>
@@ -139,7 +148,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
     <div class="kpi-card">
       <div class="kpi-label teal">Peso cargado</div>
       <div class="kpi-value teal" id="k-peso">&#8212;</div>
-      <div class="kpi-sub">toneladas en el per&iacute;odo</div>
+      <div class="kpi-sub">kilos en el per&iacute;odo</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-label">Tiempo efectivo prom.</div>
@@ -328,14 +337,24 @@ function filtrarPorFecha() {
   });
 }
 
+function filtrarBusqueda(lista) {
+  const q = (document.getElementById('f-busqueda').value || '').trim().toLowerCase();
+  if (!q) return lista;
+  return lista.filter(function(v) {
+    return [v.conductor, v.clientes, v.transporte, v.ruta, v.dominio, v.descripcion, v.comentarios]
+      .some(function(campo) { return (campo || '').toString().toLowerCase().indexOf(q) !== -1; });
+  });
+}
+
 function limpiarFiltro() {
   document.getElementById('f-desde').value = '';
   document.getElementById('f-hasta').value = '';
+  document.getElementById('f-busqueda').value = '';
   render();
 }
 
 function render() {
-  const lista = filtrarPorFecha();
+  const lista = filtrarBusqueda(filtrarPorFecha());
   const desdeVal = document.getElementById('f-desde').value;
   const hastaVal = document.getElementById('f-hasta').value;
 
@@ -344,8 +363,8 @@ function render() {
   document.getElementById('k-periodo-txt').textContent =
     (desdeVal || hastaVal) ? 'en el rango seleccionado' : 'todos los registros';
 
-  const pesoTon = lista.reduce(function(s, v) { return s + (v.pesoKg || 0); }, 0) / 1000;
-  document.getElementById('k-peso').textContent = pesoTon.toFixed(1) + ' T';
+  const pesoKgTotal = lista.reduce(function(s, v) { return s + (v.pesoKg || 0); }, 0);
+  document.getElementById('k-peso').textContent = Math.round(pesoKgTotal).toLocaleString('es-AR') + ' kg';
 
   const tiempos = lista.map(function(v) { return v.tiempoEfectivoMin; }).filter(function(t) { return t !== null; });
   const prom = tiempos.length ? tiempos.reduce(function(s, t) { return s + t; }, 0) / tiempos.length : null;
