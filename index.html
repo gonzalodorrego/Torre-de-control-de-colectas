@@ -336,10 +336,21 @@ function render() {
   const prom = tiempos.length ? tiempos.reduce(function(s, t) { return s + t; }, 0) / tiempos.length : null;
   document.getElementById('k-tiempo').textContent =
     prom === null ? '\u2014' : (Math.floor(prom / 60) + 'h ' + Math.round(prom % 60) + 'm');
+  const tiempoSub = document.querySelector('#k-tiempo').parentElement.querySelector('.kpi-sub');
+  tiempoSub.textContent = 'con dato en ' + tiempos.length + ' de ' + lista.length + ' viajes del per\u00edodo';
 
-  try { renderDonutClientes(lista); } catch (e) { console.error('Error en Distribución:', e); }
-  try { renderBarlistTransporte(lista); } catch (e) { console.error('Error en Desglose:', e); }
-  try { renderBarlistConductor(lista); } catch (e) { console.error('Error en Horas efectivas:', e); }
+  try { renderDonutClientes(lista); } catch (e) {
+    console.error('Error en Distribución:', e);
+    document.getElementById('donut-lbl').textContent = 'Error: ' + e.message;
+  }
+  try { renderBarlistTransporte(lista); } catch (e) {
+    console.error('Error en Desglose:', e);
+    document.getElementById('barlist-transporte').innerHTML = '<div class="bar-empty">Error: ' + e.message + '</div>';
+  }
+  try { renderBarlistConductor(lista); } catch (e) {
+    console.error('Error en Horas efectivas:', e);
+    document.getElementById('barlist-conductor').innerHTML = '<div class="bar-empty">Error: ' + e.message + '</div>';
+  }
   try { renderEvolucion(); } catch (e) { console.error('Error en Evolución:', e); }
 }
 
