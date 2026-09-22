@@ -337,10 +337,10 @@ function render() {
   document.getElementById('k-tiempo').textContent =
     prom === null ? '\u2014' : (Math.floor(prom / 60) + 'h ' + Math.round(prom % 60) + 'm');
 
-  renderDonutClientes(lista);
-  renderBarlistTransporte(lista);
-  renderBarlistConductor(lista);
-  renderEvolucion();
+  try { renderDonutClientes(lista); } catch (e) { console.error('Error en Distribución:', e); }
+  try { renderBarlistTransporte(lista); } catch (e) { console.error('Error en Desglose:', e); }
+  try { renderBarlistConductor(lista); } catch (e) { console.error('Error en Horas efectivas:', e); }
+  try { renderEvolucion(); } catch (e) { console.error('Error en Evolución:', e); }
 }
 
 function agrupar(lista, campo) {
@@ -366,16 +366,21 @@ function renderDonutClientes(lista) {
 
   const total = top.reduce(function(s, e) { return s + e.viajes; }, 0);
   const paleta = ['#0d9488', '#14b8a6', '#38bdf8', '#f97316', '#a855f7', '#94a3b8'];
+  const labels = top.map(function(e) { return e.label; });
+  const data = top.map(function(e) { return e.viajes; });
 
-  if (chartDonut) chartDonut.destroy();
-  chartDonut = new Chart(document.getElementById('chart-donut'), {
-    type: 'doughnut',
-    data: {
-      labels: top.map(function(e) { return e.label; }),
-      datasets: [{ data: top.map(function(e) { return e.viajes; }), backgroundColor: paleta, borderColor: '#fff', borderWidth: 3 }]
-    },
-    options: { cutout: '72%', responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } } }
-  });
+  if (chartDonut) {
+    chartDonut.data.labels = labels;
+    chartDonut.data.datasets[0].data = data;
+    chartDonut.data.datasets[0].backgroundColor = paleta;
+    chartDonut.update();
+  } else {
+    chartDonut = new Chart(document.getElementById('chart-donut'), {
+      type: 'doughnut',
+      data: { labels: labels, datasets: [{ data: data, backgroundColor: paleta, borderColor: '#fff', borderWidth: 3 }] },
+      options: { cutout: '72%', responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } } }
+    });
+  }
 
   const principal = top[0];
   document.getElementById('donut-pct').textContent = (principal && total) ? Math.round(principal.viajes / total * 100) + '%' : '\u2014';
@@ -439,14 +444,23 @@ function renderEvolucion() {
     .filter(function(k) { return mapa[k].fechaObj; })
     .sort(function(a, b) { return mapa[a].fechaObj - mapa[b].fechaObj; })
     .slice(-14);
+  const viajesData = claves.map(function(k) { return mapa[k].viajes; });
+  const pesoData   = claves.map(function(k) { return +(mapa[k].pesoKg / 1000).toFixed(1); });
 
-  if (chartEvolucion) chartEvolucion.destroy();
+  if (chartEvolucion) {
+    chartEvolucion.data.labels = claves;
+    chartEvolucion.data.datasets[0].data = viajesData;
+    chartEvolucion.data.datasets[1].data = pesoData;
+    chartEvolucion.update();
+    return;
+  }
+
   chartEvolucion = new Chart(document.getElementById('chart-evolucion'), {
     data: {
       labels: claves,
       datasets: [
-        { type: 'bar',  label: 'Viajes',       data: claves.map(function(k) { return mapa[k].viajes; }), backgroundColor: 'rgba(13,148,136,.55)', borderRadius: 6, yAxisID: 'y' },
-        { type: 'line', label: 'Peso (Ton)',   data: claves.map(function(k) { return +(mapa[k].pesoKg / 1000).toFixed(1); }), borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,.12)', tension: .3, yAxisID: 'y1' }
+        { type: 'bar',  label: 'Viajes',     data: viajesData, backgroundColor: 'rgba(13,148,136,.55)', borderRadius: 6, yAxisID: 'y' },
+        { type: 'line', label: 'Peso (Ton)', data: pesoData,   borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,.12)', tension: .3, yAxisID: 'y1' }
       ]
     },
     options: {
