@@ -7,6 +7,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script>
+  if (typeof Chart === 'undefined') {
+    document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"><\/script>');
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    if (typeof Chart === 'undefined') {
+      var msg = 'No se pudo cargar Chart.js desde ningún CDN (revisá si el proxy/firewall bloquea cdnjs.cloudflare.com y cdn.jsdelivr.net).';
+      var donutLbl = document.getElementById('donut-lbl');
+      if (donutLbl) donutLbl.textContent = msg;
+    }
+  });
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
