@@ -491,7 +491,7 @@ function renderEvolucion() {
     .sort(function(a, b) { return mapa[a].fechaObj - mapa[b].fechaObj; })
     .slice(-14);
   const viajesData = claves.map(function(k) { return mapa[k].viajes; });
-  const pesoData   = claves.map(function(k) { return +(mapa[k].pesoKg / 1000).toFixed(1); });
+  const pesoData   = claves.map(function(k) { return Math.round(mapa[k].pesoKg); });
 
   if (chartEvolucion) {
     chartEvolucion.data.labels = claves;
@@ -506,7 +506,7 @@ function renderEvolucion() {
       labels: claves,
       datasets: [
         { type: 'bar',  label: 'Viajes',     data: viajesData, backgroundColor: 'rgba(13,148,136,.55)', borderRadius: 6, yAxisID: 'y' },
-        { type: 'line', label: 'Peso (Ton)', data: pesoData,   borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,.12)', tension: .3, yAxisID: 'y1' }
+        { type: 'line', label: 'Peso (kg)', data: pesoData,   borderColor: '#f97316', backgroundColor: 'rgba(249,115,22,.12)', tension: .3, yAxisID: 'y1' }
       ]
     },
     options: {
