@@ -73,6 +73,9 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 .kpi-value.orange{color:var(--orange)}
 .kpi-value.teal{color:var(--teal)}
 .kpi-sub{font-size:12px;color:var(--muted);margin-top:8px}
+.kpi-card.main{background:var(--teal);border-color:var(--teal);box-shadow:0 6px 18px rgba(13,148,136,.25)}
+.kpi-card.main .kpi-label,.kpi-card.main .kpi-sub{color:rgba(255,255,255,.85)}
+.kpi-card.main .kpi-value{color:#fff;font-size:40px}
 
 .panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px}
@@ -163,6 +166,11 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
   <div id="status-msg"></div>
 
   <section class="kpi-grid">
+    <div class="kpi-card main">
+      <div class="kpi-label">Horas trabajadas por chofer</div>
+      <div class="kpi-value" id="k-tiempo-cond">&#8212;</div>
+      <div class="kpi-sub" id="k-tiempo-cond-sub">&#8212;</div>
+    </div>
     <div class="kpi-card">
       <div class="kpi-label">Total hist&oacute;rico</div>
       <div class="kpi-value" id="k-total-historico">&#8212;</div>
@@ -182,11 +190,6 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
       <div class="kpi-label">Tiempo prom. por viaje</div>
       <div class="kpi-value" id="k-tiempo">&#8212;</div>
       <div class="kpi-sub">por viaje, en el per&iacute;odo</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Horas prom. por conductor</div>
-      <div class="kpi-value" id="k-tiempo-cond">&#8212;</div>
-      <div class="kpi-sub" id="k-tiempo-cond-sub">&#8212;</div>
     </div>
   </section>
 
@@ -472,18 +475,22 @@ function render() {
     prom === null ? '\u2014' : (Math.floor(prom / 60) + 'h ' + Math.round(prom % 60) + 'm');
   const tiempoSub = document.querySelector('#k-tiempo').parentElement.querySelector('.kpi-sub');
   tiempoSub.textContent = 'con dato en ' + tiempos.length + ' de ' + lista.length + ' viajes del per\u00edodo';
+  // Jornada = un chofer en un día: suma todas sus vueltas de ese día
   const porCond = {};
+  const choferes = {};
   lista.forEach(function(v) {
     if (v.tiempoEfectivoMin === null) return;
-    const key = v.conductor || 'Sin dato';
+    const chofer = v.conductor || 'Sin dato';
+    const key = chofer + '|' + v.fecha;
     porCond[key] = (porCond[key] || 0) + v.tiempoEfectivoMin;
+    choferes[chofer] = true;
   });
   const conds = Object.keys(porCond);
   const promCond = conds.length ? conds.reduce(function(s, k) { return s + porCond[k]; }, 0) / conds.length : null;
   document.getElementById('k-tiempo-cond').textContent =
     promCond === null ? '\u2014' : (Math.floor(promCond / 60) + 'h ' + Math.round(promCond % 60) + 'm');
   document.getElementById('k-tiempo-cond-sub').textContent =
-    'promedio entre ' + conds.length + ' conductores del per\u00edodo';
+    'promedio por d\u00eda \u00b7 ' + Object.keys(choferes).length + ' choferes, ' + conds.length + ' jornadas';
 
   try { renderDonutClientes(lista); } catch (e) {
     console.error('Error en Distribución:', e);
