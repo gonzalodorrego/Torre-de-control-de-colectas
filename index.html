@@ -356,7 +356,7 @@ function celdaNum(c) { return (c && typeof c.v === 'number') ? c.v : null; }
 function filaAViaje(c, idx) {
   const valUnif = idx.tiempoUnif >= 0 ? celda(c[idx.tiempoUnif]) : null;
   const valEfec = idx.tiempoEfec >= 0 ? celda(c[idx.tiempoEfec]) : null;
-  const tiempoTxt = valUnif || valEfec; // usa "unificado" solo si esa fila tiene dato ahí; si no, cae en el otro
+  const tiempoTxt = valEfec || valUnif; // usa el tiempo de CADA viaje; el "unificado" ya suma las vueltas del día y duplicaría horas
   return {
     fecha:             idx.fecha       >= 0 ? celda(c[idx.fecha])       : null,
     transporte:        idx.transporte  >= 0 ? celda(c[idx.transporte])  : '',
