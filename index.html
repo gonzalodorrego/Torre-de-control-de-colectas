@@ -58,6 +58,11 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 .searchgroup input{border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-family:inherit;font-size:13px;color:var(--text);min-width:220px}
 .btn-ghost{background:transparent;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--muted);transition:all .15s}
 .btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
+.seg{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.seg button{background:transparent;border:none;border-right:1px solid var(--border);padding:7px 14px;font-family:inherit;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s}
+.seg button:last-child{border-right:none}
+.seg button:hover{color:var(--teal)}
+.seg button.active{background:var(--teal);color:#fff}
 
 .kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:20px}
 .kpi-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 22px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
@@ -94,6 +99,19 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 .bar-val{width:52px;text-align:right;font-size:12px;font-weight:700;color:var(--muted)}
 .bar-empty{font-size:12px;color:var(--muted)}
 
+.btn-primary{background:var(--teal);border:1px solid var(--teal);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;color:#fff;transition:all .15s}
+.btn-primary:hover{background:#0f766e}
+.filter-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chart-box{position:relative;height:260px}
+
+@media print{
+  body{background:#fff}
+  #btn-refresh,.filter-actions,.searchgroup button{display:none!important}
+  .kpi-card,.panel{break-inside:avoid;box-shadow:none}
+  .kpi-grid{grid-template-columns:repeat(5,1fr)!important}
+  .panels{grid-template-columns:1fr 1fr!important}
+}
+
 #status-msg{text-align:center;font-size:12px;color:var(--muted);margin-top:4px;display:none}
 
 @media (max-width:860px){
@@ -121,6 +139,11 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 
   <div class="filterbar">
     <div class="filterbar-left">
+      <div class="seg" id="seg-centro">
+        <button class="active" data-centro="TODOS" onclick="elegirCentro('TODOS')">General</button>
+        <button data-centro="A055" onclick="elegirCentro('A055')">A055</button>
+        <button data-centro="A050" onclick="elegirCentro('A050')">A050</button>
+      </div>
       <div class="daterange">
         <label>Desde <input type="date" id="f-desde"/></label>
         <label>Hasta <input type="date" id="f-hasta"/></label>
@@ -130,7 +153,11 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
         <button class="btn-ghost" onclick="render()">Buscar</button>
       </div>
     </div>
-    <button class="btn-ghost" onclick="limpiarFiltro()">Ver todo</button>
+    <div class="filter-actions">
+      <button class="btn-ghost" onclick="limpiarFiltro()">Ver todo</button>
+      <button class="btn-ghost" onclick="exportarCSV()">&#11015; CSV filtrado</button>
+      <button class="btn-primary" onclick="window.print()">&#128424; Imprimir / PDF</button>
+    </div>
   </div>
 
   <div id="status-msg"></div>
@@ -163,6 +190,34 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
     </div>
   </section>
 
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label teal">Pallets</div>
+      <div class="kpi-value teal" id="k-pallets">&#8212;</div>
+      <div class="kpi-sub">pallets en el per&iacute;odo</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Pallets / viaje</div>
+      <div class="kpi-value" id="k-pallets-viaje">&#8212;</div>
+      <div class="kpi-sub" id="k-pallets-viaje-sub">&#8212;</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Kg / viaje</div>
+      <div class="kpi-value" id="k-kg-viaje">&#8212;</div>
+      <div class="kpi-sub" id="k-kg-viaje-sub">&#8212;</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label orange">Paradas / viaje</div>
+      <div class="kpi-value orange" id="k-paradas-viaje">&#8212;</div>
+      <div class="kpi-sub" id="k-paradas-viaje-sub">&#8212;</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Duraci&oacute;n m&aacute;x.</div>
+      <div class="kpi-value" id="k-dur-max">&#8212;</div>
+      <div class="kpi-sub" id="k-dur-min">&#8212;</div>
+    </div>
+  </section>
+
   <section class="panels">
     <div class="panel">
       <div class="panel-title">Distribuci&oacute;n</div>
@@ -189,6 +244,25 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
     <div id="barlist-conductor"></div>
   </section>
 
+  <section class="panels" style="margin-top:16px">
+    <div class="panel">
+      <div class="panel-title">Comparativa por centro</div>
+      <div class="panel-sub">Viajes y pallets &middot; A055 vs A050</div>
+      <div class="chart-box"><canvas id="chart-centro-vol"></canvas></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Comparativa por centro</div>
+      <div class="panel-sub">Paradas y horas promedio por viaje</div>
+      <div class="chart-box"><canvas id="chart-centro-prom"></canvas></div>
+    </div>
+  </section>
+
+  <section class="panel panel-wide" style="margin-bottom:16px">
+    <div class="panel-title">Evoluci&oacute;n de pallets</div>
+    <div class="panel-sub">Pallets movidos por d&iacute;a (&uacute;ltimos registros)</div>
+    <div class="chart-box"><canvas id="chart-pallets"></canvas></div>
+  </section>
+
   <section class="panel panel-wide">
     <div class="panel-title">Evoluci&oacute;n diaria</div>
     <div class="panel-sub">Viajes y peso cargado por d&iacute;a (&uacute;ltimos registros)</div>
@@ -211,10 +285,15 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
    ========================================================================= */
 const SHEET_ID   = '1n-CJLRokUGsNk0pRsxxUNS-UVAvCjUtvUmHjhPWjiCo';
 const SHEET_GIDS = ['2082339200', '0']; // A055 y A050
+const SHEET_CENTROS = ['A055', 'A050']; // mismo orden que SHEET_GIDS
+let CENTRO = 'TODOS';
 
 let VIAJES = [];
 let chartDonut = null;
 let chartEvolucion = null;
+let chartCentroVol = null;
+let chartCentroProm = null;
+let chartPallets = null;
 
 async function fetchHoja(gid) {
   const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?gid=' + gid + '&tqx=out:json';
@@ -318,6 +397,7 @@ async function cargarTodo() {
   status.textContent = 'Actualizando datos del sheet...';
   try {
     const listas = await Promise.all(SHEET_GIDS.map(fetchHoja));
+    listas.forEach(function(l, i) { l.forEach(function(v) { v.centro = SHEET_CENTROS[i]; }); });
     VIAJES = listas.reduce((acc, l) => acc.concat(l), []);
     document.getElementById('last-update').textContent =
       'Actualizado ' + new Date().toLocaleTimeString('es-AR', { hour12: false });
@@ -328,13 +408,27 @@ async function cargarTodo() {
   }
 }
 
-function filtrarPorFecha() {
+function viajesCentro() {
+  if (CENTRO === 'TODOS') return VIAJES;
+  return VIAJES.filter(function(v) { return v.centro === CENTRO; });
+}
+
+function elegirCentro(c) {
+  CENTRO = c;
+  document.querySelectorAll('#seg-centro button').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-centro') === c);
+  });
+  render();
+}
+
+function filtrarPorFecha(baseOpt) {
+  const base = baseOpt || viajesCentro();
   const desdeStr = document.getElementById('f-desde').value; // yyyy-mm-dd
   const hastaStr = document.getElementById('f-hasta').value;
-  if (!desdeStr && !hastaStr) return VIAJES;
+  if (!desdeStr && !hastaStr) return base;
   const desde = desdeStr ? new Date(desdeStr + 'T00:00:00') : null;
   const hasta = hastaStr ? new Date(hastaStr + 'T23:59:59') : null;
-  return VIAJES.filter(function(v) {
+  return base.filter(function(v) {
     const f = parseFechaSheet(v.fecha);
     if (!f) return false;
     if (desde && f < desde) return false;
@@ -364,7 +458,7 @@ function render() {
   const desdeVal = document.getElementById('f-desde').value;
   const hastaVal = document.getElementById('f-hasta').value;
 
-  document.getElementById('k-total-historico').textContent = VIAJES.length;
+  document.getElementById('k-total-historico').textContent = viajesCentro().length;
   document.getElementById('k-viajes-periodo').textContent  = lista.length;
   document.getElementById('k-periodo-txt').textContent =
     (desdeVal || hastaVal) ? 'en el rango seleccionado' : 'todos los registros';
@@ -404,6 +498,157 @@ function render() {
     document.getElementById('barlist-conductor').innerHTML = '<div class="bar-empty">Error: ' + e.message + '</div>';
   }
   try { renderEvolucion(); } catch (e) { console.error('Error en Evolución:', e); }
+
+  try { renderKpisExtra(lista); } catch (e) { console.error('Error en tarjetas extra:', e); }
+  try { renderComparativaCentros(); } catch (e) { console.error('Error en Comparativa:', e); }
+  try { renderEvolucionPallets(); } catch (e) { console.error('Error en Evolución pallets:', e); }
+}
+
+/* ---------- Helpers ---------- */
+function fmtHM(min) {
+  if (min === null || min === undefined || isNaN(min)) return '\u2014';
+  const t = Math.round(min);
+  return Math.floor(t / 60) + 'h ' + (t % 60) + 'm';
+}
+function fmtNum(n, dec) {
+  return n.toLocaleString('es-AR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+}
+function promedioCampo(lista, campo) {
+  const vals = lista.map(function(v) { return v[campo]; }).filter(function(x) { return x !== null && x !== undefined; });
+  return { prom: vals.length ? vals.reduce(function(s, x) { return s + x; }, 0) / vals.length : null, n: vals.length, total: vals.reduce(function(s, x) { return s + x; }, 0) };
+}
+
+/* ---------- Segunda fila de tarjetas ---------- */
+function renderKpisExtra(lista) {
+  const pal = promedioCampo(lista, 'pallet');
+  const kg  = promedioCampo(lista, 'pesoKg');
+  const par = promedioCampo(lista, 'paradas');
+
+  document.getElementById('k-pallets').textContent = pal.n ? fmtNum(pal.total, 0) : '\u2014';
+  document.getElementById('k-pallets-viaje').textContent = pal.prom === null ? '\u2014' : fmtNum(pal.prom, 1);
+  document.getElementById('k-pallets-viaje-sub').textContent = 'con dato en ' + pal.n + ' de ' + lista.length + ' viajes';
+  document.getElementById('k-kg-viaje').textContent = kg.prom === null ? '\u2014' : fmtNum(kg.prom, 0) + ' kg';
+  document.getElementById('k-kg-viaje-sub').textContent = 'con dato en ' + kg.n + ' de ' + lista.length + ' viajes';
+  document.getElementById('k-paradas-viaje').textContent = par.prom === null ? '\u2014' : fmtNum(par.prom, 1);
+  document.getElementById('k-paradas-viaje-sub').textContent = 'con dato en ' + par.n + ' de ' + lista.length + ' viajes';
+
+  const tiempos = lista.map(function(v) { return v.tiempoEfectivoMin; }).filter(function(t) { return t !== null; });
+  document.getElementById('k-dur-max').textContent = tiempos.length ? fmtHM(Math.max.apply(null, tiempos)) : '\u2014';
+  document.getElementById('k-dur-min').textContent = tiempos.length ? 'm\u00edn. ' + fmtHM(Math.min.apply(null, tiempos)) : '\u2014';
+}
+
+/* ---------- Comparativa A055 vs A050 (respeta fechas y búsqueda, no el botón de centro) ---------- */
+function renderComparativaCentros() {
+  const lista = filtrarBusqueda(filtrarPorFecha(VIAJES));
+  const centros = SHEET_CENTROS;
+  const viajes = [], pallets = [], paradas = [], horas = [];
+  centros.forEach(function(c) {
+    const l = lista.filter(function(v) { return v.centro === c; });
+    viajes.push(l.length);
+    pallets.push(promedioCampo(l, 'pallet').total);
+    const p = promedioCampo(l, 'paradas').prom;
+    paradas.push(p === null ? 0 : Math.round(p * 10) / 10);
+    const t = promedioCampo(l, 'tiempoEfectivoMin').prom;
+    horas.push(t === null ? 0 : Math.round(t / 60 * 10) / 10);
+  });
+
+  const ejes = {
+    x: { ticks: { color: '#64748b', font: { size: 12, weight: '600' } }, grid: { display: false } },
+    y: { beginAtZero: true, ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: 'rgba(15,23,42,.05)' } }
+  };
+  const leyenda = { display: true, position: 'bottom', labels: { color: '#64748b', font: { family: "'DM Sans'", size: 11 } } };
+
+  if (chartCentroVol) {
+    chartCentroVol.data.datasets[0].data = viajes;
+    chartCentroVol.data.datasets[1].data = pallets;
+    chartCentroVol.update();
+  } else {
+    chartCentroVol = new Chart(document.getElementById('chart-centro-vol'), {
+      type: 'bar',
+      data: { labels: centros, datasets: [
+        { label: 'Viajes',  data: viajes,  backgroundColor: '#f97316', borderRadius: 6, yAxisID: 'y' },
+        { label: 'Pallets', data: pallets, backgroundColor: '#0d9488', borderRadius: 6, yAxisID: 'y1' }
+      ]},
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: leyenda },
+        scales: { x: ejes.x, y: Object.assign({ position: 'left' }, ejes.y),
+          y1: { position: 'right', beginAtZero: true, ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { display: false } } } }
+    });
+  }
+
+  if (chartCentroProm) {
+    chartCentroProm.data.datasets[0].data = paradas;
+    chartCentroProm.data.datasets[1].data = horas;
+    chartCentroProm.update();
+  } else {
+    chartCentroProm = new Chart(document.getElementById('chart-centro-prom'), {
+      type: 'bar',
+      data: { labels: centros, datasets: [
+        { label: 'Paradas / viaje', data: paradas, backgroundColor: '#38bdf8', borderRadius: 6 },
+        { label: 'Horas / viaje',   data: horas,   backgroundColor: '#1e293b', borderRadius: 6 }
+      ]},
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: leyenda }, scales: ejes }
+    });
+  }
+}
+
+/* ---------- Evolución de pallets (mismo criterio que la evolución diaria) ---------- */
+function renderEvolucionPallets() {
+  const mapa = {};
+  viajesCentro().forEach(function(v) {
+    const f = v.fecha || 'Sin fecha';
+    if (!mapa[f]) mapa[f] = { pallets: 0, fechaObj: parseFechaSheet(v.fecha) };
+    mapa[f].pallets += (v.pallet || 0);
+  });
+  const claves = Object.keys(mapa)
+    .filter(function(k) { return mapa[k].fechaObj; })
+    .sort(function(a, b) { return mapa[a].fechaObj - mapa[b].fechaObj; })
+    .slice(-14);
+  const data = claves.map(function(k) { return mapa[k].pallets; });
+
+  if (chartPallets) {
+    chartPallets.data.labels = claves;
+    chartPallets.data.datasets[0].data = data;
+    chartPallets.update();
+    return;
+  }
+  chartPallets = new Chart(document.getElementById('chart-pallets'), {
+    type: 'line',
+    data: { labels: claves, datasets: [
+      { label: 'Pallets', data: data, borderColor: '#0d9488', backgroundColor: 'rgba(13,148,136,.12)', fill: true, tension: .3, pointRadius: 3 }
+    ]},
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { display: false } },
+        y: { beginAtZero: true, ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: 'rgba(15,23,42,.05)' } }
+      } }
+  });
+}
+
+/* ---------- Exportar CSV (lo que se ve con los filtros actuales) ---------- */
+function exportarCSV() {
+  const lista = filtrarBusqueda(filtrarPorFecha());
+  if (!lista.length) { alert('No hay viajes para exportar con los filtros actuales.'); return; }
+  const cab = ['Centro','Fecha','Transporte','Ruta','Dominio','Conductor','Paradas','Pallets','Clientes','Descripcion','Comentarios','Hora inicio','Hora fin','Tiempo efectivo','Peso kg'];
+  const esc = function(x) {
+    if (x === null || x === undefined) return '';
+    const t = String(x);
+    return /[";\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+  };
+  const num = function(n) { return (n === null || n === undefined) ? '' : String(n).replace('.', ','); };
+  const filas = lista.map(function(v) {
+    const te = v.tiempoEfectivoMin === null ? '' :
+      Math.floor(v.tiempoEfectivoMin / 60) + ':' + String(Math.round(v.tiempoEfectivoMin % 60)).padStart(2, '0');
+    return [v.centro, v.fecha, v.transporte, v.ruta, v.dominio, v.conductor, num(v.paradas), num(v.pallet),
+            v.clientes, v.descripcion, v.comentarios, v.horaInicio, v.horaFin, te, num(v.pesoKg)].map(esc).join(';');
+  });
+  const csv = '\uFEFF' + cab.join(';') + '\n' + filas.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  const d = document.getElementById('f-desde').value, h = document.getElementById('f-hasta').value;
+  a.href = URL.createObjectURL(blob);
+  a.download = 'viajes_' + (CENTRO === 'TODOS' ? 'general' : CENTRO) + (d ? '_' + d : '') + (h ? '_a_' + h : '') + '.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
 }
 
 function agrupar(lista, campo) {
@@ -497,7 +742,7 @@ function renderBarlistConductor(lista) {
 
 function renderEvolucion() {
   const mapa = {};
-  VIAJES.forEach(function(v) {
+  viajesCentro().forEach(function(v) {
     const f = v.fecha || 'Sin fecha';
     if (!mapa[f]) mapa[f] = { viajes: 0, pesoKg: 0, fechaObj: parseFechaSheet(v.fecha) };
     mapa[f].viajes++;
