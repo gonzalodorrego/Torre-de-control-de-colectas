@@ -59,7 +59,7 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
 .btn-ghost{background:transparent;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--muted);transition:all .15s}
 .btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
 
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:20px}
 .kpi-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 22px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
 .kpi-label{font-size:11px;font-style:italic;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
 .kpi-label.orange{color:var(--orange)}
@@ -152,10 +152,14 @@ button{cursor:pointer;font-family:inherit;border:none;outline:none}
       <div class="kpi-sub">kilos en el per&iacute;odo</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-label">Tiempo efectivo prom.</div>
+      <div class="kpi-label">Tiempo prom. por viaje</div>
       <div class="kpi-value" id="k-tiempo">&#8212;</div>
       <div class="kpi-sub">por viaje, en el per&iacute;odo</div>
-      <div class="kpi-sub" id="k-tiempo-cond" style="font-weight:700;color:var(--teal)">&#8212;</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Horas prom. por conductor</div>
+      <div class="kpi-value" id="k-tiempo-cond">&#8212;</div>
+      <div class="kpi-sub" id="k-tiempo-cond-sub">&#8212;</div>
     </div>
   </section>
 
@@ -383,7 +387,9 @@ function render() {
   const conds = Object.keys(porCond);
   const promCond = conds.length ? conds.reduce(function(s, k) { return s + porCond[k]; }, 0) / conds.length : null;
   document.getElementById('k-tiempo-cond').textContent =
-    promCond === null ? '\u2014' : ('Por conductor: ' + Math.floor(promCond / 60) + 'h ' + Math.round(promCond % 60) + 'm (' + conds.length + ' conductores)');
+    promCond === null ? '\u2014' : (Math.floor(promCond / 60) + 'h ' + Math.round(promCond % 60) + 'm');
+  document.getElementById('k-tiempo-cond-sub').textContent =
+    'promedio entre ' + conds.length + ' conductores del per\u00edodo';
 
   try { renderDonutClientes(lista); } catch (e) {
     console.error('Error en Distribución:', e);
